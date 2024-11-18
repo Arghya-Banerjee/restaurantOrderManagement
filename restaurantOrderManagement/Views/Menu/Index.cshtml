@@ -2,9 +2,23 @@
     ViewData["Title"] = "Menu Page";
 }
 
-@model List<MenuModel>
+@model restaurantOrderManagement.ViewModels.MenuViewModel
+
 
 <h1 class="display-4">Menu List</h1>
+
+@using (Html.BeginForm("FilterMenu", "Menu", FormMethod.Post, new { id = "categoryForm" }))
+{
+    <select id="categoryFilter" name="categoryName" onchange="document.getElementById('categoryForm').submit();">
+        <option value="All">All</option>
+        @foreach (var category in Model.categoryItems)
+        {
+            <option value="@category.categoryname">@category.categoryname</option>
+        }
+        
+    </select>
+}
+
 
 <table class="table">
     <thead>
@@ -25,7 +39,7 @@
     </thead>
     <tbody>
         @{
-            foreach (var menuitem in Model)
+            foreach (var menuitem in Model.menuItems)
             {
                 <tr>
                     <td>
@@ -45,3 +59,4 @@
         }
     </tbody>
 </table>
+
