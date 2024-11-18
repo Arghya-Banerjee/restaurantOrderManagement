@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Menu Page";
+}
+
+@model List<MenuModel>
+
+<h1 class="display-4">Menu List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Food Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Price
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var menuitem in Model)
+            {
+                <tr>
+                    <td>
+                        @menuitem.foodname
+                    </td>
+                    <td>
+                        @menuitem.fooddescription
+                    </td>
+                    <td>
+                        @menuitem.categoryname
+                    </td>
+                    <td>
+                        @menuitem.foodprice
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
