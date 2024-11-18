@@ -9,5 +9,18 @@
         public string UserId { get; set; }
         public string? PassCode { get; set; }
         public int UserType { get; set; }
+
+        public UserRole vUserRole;
     }
+
+    public enum UserRole
+    {
+        waiter = 1,
+        Admin = 2,
+        Accounts = 3,
+        Other = 4
+
+    }
+
+
 }

@@ -1,33 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<script>
+    function loginUser() {
+        const username = $('#username').val();
+        const password = $('#password').val();
 
-<div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title text-center">Login</h3>
-                    <form asp-controller="Login" asp-action="Validate" method="post">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Optional JavaScript; choose one of the two! -->
-<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        $.ajax({
+            url: '/Login/Validate',
+            type: 'POST',
+            data: { username: username, password: password },
+            success: function (response) {
+                console.log(response); // Debugging: Log the response to see what is returned
+                if (response.success === 1 && response.redirectUrl) {
+                    console.log("Redirecting to:", response.redirectUrl); // Debugging
+                    // Redirect to the URL returned from the server
+                    window.location.href = response.redirectUrl;
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error); // Debugging
+                alert("Error during login!");
+            }
+        });
+    }
+</script>
