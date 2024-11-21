@@ -37,6 +37,9 @@ The system is built using a **microservices architecture** for modularity and sc
 - **View:** Presents data to users via dynamic and responsive UI.
 - **Controller:** Acts as the bridge between the view and model.
 
+### Database Schema
+![image](https://github.com/user-attachments/assets/e884c430-59fa-480f-aeab-84b324c4bf15)
+
 ---
 
 ## 🔒 **Non-Functional Requirements**
