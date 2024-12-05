@@ -1,22 +1,76 @@
+/* General Dark Mode Styling */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text color */
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #121212; /* Same as html background */
+    color: #ffffff; /* Consistent text color */
+}
+
+/* Button Focus and Active States */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem #ffffff, 0 0 0 0.25rem #258cfb; /* White glow around elements */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1f1f1f; !important; /* Darker navbar */
+    border-color: #333333; /* Subtle border for navbar */
+}
+
+    .navbar .nav-link {
+        color: #ffffff; !important; /* White navbar links */
+    }
+
+        .navbar .nav-link:hover {
+            color: #258cfb; !important; /* Highlight color on hover */
+        }
+
+/* Card */
+.card {
+    background-color: #1e1e1e; /* Darker card background */
+    color: #ffffff; /* Light text for cards */
+    border-color: #333333; /* Subtle border for cards */
+}
+
+/* Input Fields */
+.form-control {
+    background-color: #2a2a2a; /* Darker input field background */
+    color: #ffffff; /* Light text for input fields */
+    border-color: #444444; /* Subtle border for input fields */
+}
+
+    .form-control::placeholder {
+        color: #888888; /* Lighter placeholder text */
+    }
+
+/* Buttons */
+.btn {
+    background-color: #444444; /* Darker button background */
+    color: #ffffff; /* Light text for buttons */
+    border-color: #444444; /* Subtle button border */
+}
+
+    .btn:hover {
+        background-color: #555555; /* Slightly lighter button on hover */
+        border-color: #555555;
+    }
+
+/* Footer */
+.footer {
+    background-color: #1f1f1f; /* Darker footer */
+    color: #aaaaaa; /* Lighter footer text */
+    border-color: #333333;
 }

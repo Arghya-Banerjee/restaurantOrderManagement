@@ -2,6 +2,31 @@
     ViewData["Title"] = "Welcome Waiter";
 }
 
-<h2>Welcome Waiter</h2>
-<p>Your User ID is: <strong>@ViewBag.UserId</strong></p>
-<!-- Add any other content you want to show to the waiter after they log in -->
+<div class="container mt-5">
+    <div class="text-center">
+        <!-- Greeting Message -->
+        <h1 class="display-4 text-primary">Welcome, <span class="text-light">@ViewBag.UserId !</span></h1>
+        <p class="lead text-light">We are glad to have you here.</p>
+    </div>
+
+    <!-- Action Boxes -->
+    <div class="d-flex justify-content-center mt-5">
+        <!-- Box 1: Take an Order -->
+        <div class="card text-center mx-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title">Take an Order</h5>
+                <p class="card-text">Quickly start taking a new order from a customer.</p>
+                <a href="/Orders/Create" class="btn btn-primary">Take an Order</a>
+            </div>
+        </div>
+
+        <!-- Box 2: Add to Menu -->
+        <div class="card text-center mx-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title">Add to Menu</h5>
+                <p class="card-text">Easily add new items to the restaurant's menu.</p>
+                <a href="/Menu/Add" class="btn btn-primary">Add to Menu</a>
+            </div>
+        </div>
+    </div>
+</div>

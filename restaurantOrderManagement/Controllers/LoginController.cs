@@ -1,6 +1,8 @@
 ﻿using Core;
 using Microsoft.AspNetCore.Mvc;
 using restaurantOrderManagement.Models;
+using restaurantOrderManagement.Utility_Classes;
+using System.Globalization;
 
 namespace restaurantOrderManagement.Controllers
 {
@@ -45,8 +47,10 @@ namespace restaurantOrderManagement.Controllers
                         HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
 
                         // Return JSON response with redirect URL
-                        return Json(new { success = 1, message = "Login Successful", redirectUrl = Url.Action("WelcomeWaiter", "Waiter") });
-
+                        //return Json(new { success = 1, message = "Login Successful", redirectUrl = Url.Action("WelcomeWaiter", "Waiter") });
+                        
+                        ViewBag.UserId = StringUtility.toTitleCase(objsession.UserId);
+                        return View("~/Views/waiter/WelcomeWaiter.cshtml");
                     }
                 }
                 else
@@ -63,28 +67,5 @@ namespace restaurantOrderManagement.Controllers
                 return Json(new { success = 0, message = ex.Message });
             }
         }
-
-
-        public IActionResult WelcomeWaiter()
-        {
-            // Retrieve session details
-            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
-
-            // Check if session is null or user is not a waiter, redirect to LoginPage
-            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.waiter)
-            {
-                return RedirectToAction("LoginPage");
-            }
-
-            // Pass user ID to the view
-            ViewBag.UserId = sessionDetails.UserId;
-            return View("~/Views/waiter/WelcomeWaiter.cshtml");
-        }
-
-
-
-
-
-
     }
 }

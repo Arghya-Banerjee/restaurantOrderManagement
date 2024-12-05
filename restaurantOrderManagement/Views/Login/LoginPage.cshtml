@@ -8,17 +8,16 @@
             type: 'POST',
             data: { username: username, password: password },
             success: function (response) {
-                console.log(response); // Debugging: Log the response to see what is returned
+                console.log(response);
                 if (response.success === 1 && response.redirectUrl) {
-                    console.log("Redirecting to:", response.redirectUrl); // Debugging
-                    // Redirect to the URL returned from the server
+                    console.log("Redirecting to:", response.redirectUrl);
                     window.location.href = response.redirectUrl;
                 } else {
                     alert(response.message);
                 }
             },
             error: function (xhr, status, error) {
-                console.error("AJAX Error:", status, error); // Debugging
+                console.error("AJAX Error:", status, error);
                 alert("Error during login!");
             }
         });

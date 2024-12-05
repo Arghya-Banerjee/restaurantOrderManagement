@@ -2,24 +2,28 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
-    <div class="row justify-content-center mt-5">
+<div class="container mt-5">
+    <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card shadow-lg" style="background-color: #1f1f1f; color: #ffffff; border: none; border-radius: 10px;">
                 <div class="card-body">
-                    <h3 class="card-title text-center">Login</h3>
+                    <h3 class="card-title text-center text-primary mb-4">Login</h3>
                     <form asp-controller="Login" asp-action="Validate" method="post">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                        <!-- Username Field -->
+                        <div class="form-group mb-4">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" style="background-color: #2a2a2a; color: #ffffff; border: 1px solid #444;">
                         </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        <!-- Password Field -->
+                        <div class="form-group mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" style="background-color: #2a2a2a; color: #ffffff; border: 1px solid #444;">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5" style="border-radius: 25px;">Submit</button>
+                        </div>
                     </form>
-
                 </div>
             </div>
         </div>
