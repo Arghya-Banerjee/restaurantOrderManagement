@@ -29,6 +29,52 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     }
 
+    .filter-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .dropdown {
+        padding: 10px 15px; /* Adjust padding to match the search box */
+        height: 100%; /* Ensures consistent height */
+        border: 1px solid #333;
+        border-radius: 4px;
+        background-color: #1e1e1e; /* Match table background */
+        color: #e0e0e0;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+
+        .dropdown:focus {
+            outline: none;
+            border-color: #f4b400; /* Highlight on focus */
+            box-shadow: 0 0 8px #f4b400;
+        }
+
+    .search-input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        background-color: #1e1e1e; /* Match table background */
+        color: #e0e0e0;
+        font-size: 1rem;
+    }
+
+        .search-input::placeholder {
+            color: #888; /* Placeholder text color */
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #f4b400; /* Highlight on focus */
+            box-shadow: 0 0 8px #f4b400;
+        }
+
     .table {
         width: 100%;
         border-collapse: collapse;
@@ -62,6 +108,12 @@
                 transition: background-color 0.3s;
             }
 
+        /* .table td:nth-child(3), /* Category column */ */
+        /* .table td:nth-child(4) /* Price column */ { */
+        /*     text-align: center; /* Center alignment */ */
+        /* } */
+
+
     .no-data {
         text-align: center;
         padding: 20px;
@@ -72,6 +124,17 @@
 
 <div class="table-container">
     <h1 class="display-4">Menu List</h1>
+
+    <div class="filter-container">
+        <select id="categoryDropdown" class="dropdown">
+            <option value="All">All Categories</option>
+            @foreach (var category in Model.menuItems.Select(m => m.categoryname).Distinct())
+            {
+                <option value="@category">@category</option>
+            }
+        </select>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search for food items...">
+    </div>
 
     @if (Model.menuItems != null && Model.menuItems.Any())
     {
@@ -87,7 +150,7 @@
             <tbody>
                 @foreach (var menuitem in Model.menuItems)
                 {
-                    <tr>
+                    <tr data-category="@menuitem.categoryname">
                         <td>@menuitem.foodname</td>
                         <td>@menuitem.fooddescription</td>
                         <td>@menuitem.categoryname</td>
@@ -99,6 +162,30 @@
     }
     else
     {
-    <div class="no-data">No menu items available.</div>
+        <div class="no-data">No menu items available.</div>
     }
 </div>
+
+<script>
+    const categoryDropdown = document.getElementById('categoryDropdown');
+    const searchInput = document.getElementById('searchInput');
+
+    function filterMenu() {
+        const selectedCategory = categoryDropdown.value.toLowerCase();
+        const searchFilter = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('.table tbody tr');
+
+        rows.forEach(row => {
+            const category = row.getAttribute('data-category').toLowerCase();
+            const text = row.innerText.toLowerCase();
+
+            const categoryMatch = selectedCategory === 'all' || category === selectedCategory;
+            const searchMatch = text.includes(searchFilter);
+
+            row.style.display = categoryMatch && searchMatch ? '' : 'none';
+        });
+    }
+
+    categoryDropdown.addEventListener('change', filterMenu);
+    searchInput.addEventListener('input', filterMenu);
+</script>
