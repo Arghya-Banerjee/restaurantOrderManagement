@@ -69,17 +69,17 @@ Ensure you have the following installed:
 
 ## 🖼 **Screenshots**
 
-### 🔹 **Home Page**
+### 🔹 **Login Page**
 
-![Login Page](https://via.placeholder.com/600x300.png?text=Home+Page+Preview)
+![image](https://github.com/user-attachments/assets/9f6ad3a0-5813-4066-ad4f-185e73567e6e)
 
-### 🔹 **Order Management**
+### 🔹 **Show Menu Page**
 
-![Add Menu Page](https://via.placeholder.com/600x300.png?text=Order+Management+Preview)
+![image](https://github.com/user-attachments/assets/b0883cf4-1c0e-4074-b481-3ffee4f7b974)
 
-### 🔹 **Transaction History**
+### 🔹 **Add Menu Page**
 
-![Show Menu Page](https://via.placeholder.com/600x300.png?text=Transaction+History+Preview)
+![image](https://github.com/user-attachments/assets/34720807-7181-4475-bdd5-67c4eab58bb8)
 
 ---
 
