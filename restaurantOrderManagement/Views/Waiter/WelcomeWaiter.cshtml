@@ -5,14 +5,14 @@
 <div class="container mt-5">
     <div class="text-center">
         <!-- Greeting Message -->
-        <h1 class="display-4 text-primary">Welcome, <span class="text-light">@ViewBag.UserId !</span></h1>
+        <h1 class="display-4 text-primary">Welcome, <span class="text-light">@ViewBag.UserId!</span></h1>
         <p class="lead text-light">We are glad to have you here.</p>
     </div>
 
     <!-- Action Boxes -->
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center flex-wrap mt-5">
         <!-- Box 1: Take an Order -->
-        <div class="card text-center mx-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
             <div class="card-body">
                 <h5 class="card-title">Take an Order</h5>
                 <p class="card-text">Quickly start taking a new order from a customer.</p>
@@ -21,11 +21,20 @@
         </div>
 
         <!-- Box 2: Add to Menu -->
-        <div class="card text-center mx-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
             <div class="card-body">
                 <h5 class="card-title">Add to Menu</h5>
                 <p class="card-text">Easily add new items to the restaurant's menu.</p>
-                <a href="/Menu/Add" class="btn btn-primary">Add to Menu</a>
+                <a href="/Waiter/WaiterAddMenuView" class="btn btn-primary">Add to Menu</a>
+            </div>
+        </div>
+
+        <!-- Box 3: Show Menu -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #1e1e1e; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title">Show Menu</h5>
+                <p class="card-text">View all available items in the restaurant's menu.</p>
+                <a href="/Menu/ShowMenu" class="btn btn-primary">Show Menu</a>
             </div>
         </div>
     </div>

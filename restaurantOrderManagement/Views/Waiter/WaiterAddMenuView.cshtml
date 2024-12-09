@@ -1,0 +1,107 @@
+﻿@model restaurantOrderManagement.Models.MenuModel
+
+@{
+    ViewData["Title"] = "Waiter Add Menu View";
+}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text for contrast */
+        margin: 0;
+        padding: 0;
+    }
+
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        background-color: #1e1e1e; /* Slightly lighter dark for contrast */
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        padding: 20px 30px;
+    }
+
+        .form-container h2 {
+            text-align: center;
+            color: #f4b400; /* Gold accent color */
+            margin-bottom: 20px;
+        }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #bbbbbb; /* Soft gray for labels */
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #333; /* Subtle border for input */
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: #2a2a2a; /* Dark input background */
+        color: #e0e0e0; /* Light text */
+    }
+
+        input[type="text"]::placeholder,
+        input[type="number"]::placeholder {
+            color: #888; /* Lighter gray for placeholders */
+        }
+
+    input[type="submit"] {
+        background-color: #f4b400; /* Gold accent */
+        color: #121212; /* Dark text for contrast */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+        input[type="submit"]:hover {
+            background-color: #d89b00; /* Slightly darker gold on hover */
+        }
+
+    .form-container hr {
+        margin: 20px 0;
+        border: none;
+        border-top: 1px solid #333; /* Subtle divider */
+    }
+
+    .form-container .footer-note {
+        text-align: center;
+        font-size: 12px;
+        color: #888;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Add New Menu Item</h2>
+    @using (Html.BeginForm("WaiterAddMenu", "Waiter", FormMethod.Post))
+    {
+        <label for="foodname">Food Name</label>
+        @Html.TextBoxFor(x => x.foodname, new { placeholder = "Enter food name" })
+
+        <label for="fooddescription">Description</label>
+        @Html.TextBoxFor(x => x.fooddescription, new { placeholder = "Enter a brief description" })
+
+        <label for="foodcategoryid">Category ID</label>
+        @Html.TextBoxFor(x => x.foodcategoryid, new { placeholder = "Enter category ID" })
+
+        <label for="foodprice">Price</label>
+        @Html.TextBoxFor(x => x.foodprice, new { placeholder = "Enter price (e.g., 99.00)" })
+
+        <input type="submit" value="Submit Menu" />
+    }
+    <hr />
+    <div class="footer-note">© Your Restaurant Management System</div>
+</div>

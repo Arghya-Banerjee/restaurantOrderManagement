@@ -7,7 +7,7 @@ namespace restaurantOrderManagement.Controllers
 {
     public class MenuController : Controller
     {
-        public IActionResult Index()
+        public IActionResult ShowMenu()
         {
 
             MenuModel model = new MenuModel();

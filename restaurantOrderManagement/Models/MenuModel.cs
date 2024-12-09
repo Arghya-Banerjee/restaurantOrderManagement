@@ -11,5 +11,6 @@
         public int foodavailable { get; set; }
         public int catid { get; set; }
         public string categoryname { get; set; }
+        public string createdby { get; set; }
     }
 }
