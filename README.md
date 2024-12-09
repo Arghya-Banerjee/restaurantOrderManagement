@@ -1,173 +1,130 @@
-# 🍽️ Restaurant Management System
+# 🍴 Restaurant Management System
 
-A highly scalable, secure, and modular **Restaurant Management System** built using **C# ASP.NET Core 8 MVC**, **MS SQL Server**, and a touch of **JQuery & Ajax**. This system is designed to streamline restaurant operations such as order management, stock tracking, transaction history, and daily tasks.
-
----
-
-## 🚀 **Objective**
-The main goal of this project is to ease the management of orders, stock, and day-to-day operations in slightly tech-savvy and ever-growing restaurants.
+A comprehensive and scalable solution for managing restaurant operations seamlessly.
 
 ---
 
-## 🛠️ **Technology Stack**
-- **Backend Framework:** C# ASP.NET Core 8 MVC
-- **Frontend:** HTML, CSS, JQuery, Ajax
-- **Database:** Microsoft SQL Server
-- **Architecture:** Microservices with MVC framework
-- **Security:** Industry-standard secure database querying
+## 📌 **Overview**
+
+The **Restaurant Management System** is a robust, feature-packed web application built using modern technologies to simplify the day-to-day operations of restaurants. Designed for slightly tech-savvy restaurant owners, it integrates **order management**, **transaction tracking**, and **daily operations** into one cohesive platform, with planned extensions for **stock management**.
 
 ---
 
-## 📋 **Key Features**
-1. **Order Management**  
-   Efficiently place, edit, and track customer orders.
-2. **Stock Management** *(Coming Soon)*  
-   Monitor and manage restaurant inventory in real-time.
-3. **Transaction History**  
-   Maintain and review records of transactions with ease.
-4. **Daily Management**  
-   Handle tasks like table assignments and routine operations.
+## 🎯 **Key Features**
+
+- 📋 **Order Management**: Take and manage orders efficiently with a simple UI.
+- 💵 **Transaction History**: Keep track of all financial transactions for better accountability.
+- 📆 **Daily Operations Management**: Automate repetitive tasks and optimize workflows.
+- 🛒 **Planned Feature**: Stock management to monitor inventory levels in real-time.
+- 🏗 **Scalable Architecture**: Built using microservices for future-proof scalability.
+- 🔒 **Secure Design**: Employs best practices for data security and user authentication.
 
 ---
 
-## 📐 **System Design**
-### High-Level Architecture
-The system is built using a **microservices architecture** for modularity and scalability. Each core feature (e.g., order management, transaction history) is handled by separate controllers for better maintainability. The **MVC framework** ensures a structured separation of concerns:
-- **Model:** Handles business logic and database interactions.
-- **View:** Presents data to users via dynamic and responsive UI.
-- **Controller:** Acts as the bridge between the view and model.
+## 🛠 **Tech Stack**
 
-### Database Schema
-![image](https://github.com/user-attachments/assets/e884c430-59fa-480f-aeab-84b324c4bf15)
-
-#### UserMaster Table
-- **Purpose**: Stores details of all users in the system, such as waiters and administrators.
-- **Attributes**:
-  - `Id` (Primary Key): Unique identifier for each user.
-  - `MobileNumber`: Contact number of the user.
-  - `Email`: Email address of the user.
-  - `UserId`: Unique user identifier (could be a username).
-  - `PassCode`: Password for user authentication.
-  - `IsActive`: Status of the user (e.g., 1 for active, 0 for inactive).
-  - `UserType`: Identifies the role of the user (e.g., waiter, admin).
-- **Relationships**: This table does not directly link to others but is crucial for managing access and permissions.
-
-#### CategoryMaster Table
-- **Purpose**: Serves as a reference table for food categories (e.g., appetizers, main course, desserts).
-- **Attributes**:
-  - `CatId` (Primary Key): Unique identifier for each food category.
-  - `CategoryName`: Name of the category (e.g., "Beverages", "Starters").
-- **Relationships**:
-  - Links to the `Menu` table through the `FoodCategoryId` column in the `Menu` table.
-
-#### Invoice Table
-- **Purpose**: Tracks payment transactions for orders.
-- **Attributes**:
-  - `InvId` (Primary Key): Unique identifier for each invoice.
-  - `InvDate`: Date and time of the invoice.
-  - `OrderId` (Foreign Key): Links the invoice to a specific order in the `OrderHeader` table.
-  - `OrderAmtExclGST`: Amount of the order excluding GST.
-  - `GSTAmt`: GST amount applied to the order.
-  - `OrderAmtInclGST`: Total amount of the order including GST.
-  - `PaymentMode`: Payment method (e.g., cash, card, UPI).
-  - `CreatedBy`: The user who created the invoice.
-  - `CreatedOn`: Date and time the invoice was created.
-- **Relationships**:
-  - Links to the `OrderHeader` table through `OrderId`.
-
-#### Menu Table
-- **Purpose**: Contains details about the restaurant’s menu items.
-- **Attributes**:
-  - `MenuId` (Primary Key): Unique identifier for each menu item.
-  - `FoodName`: Name of the dish (e.g., "Paneer Tikka").
-  - `FoodDescription`: Description of the dish (e.g., ingredients, preparation style).
-  - `FoodCategoryId` (Foreign Key): Links to the `CategoryMaster` table to identify the category of the dish.
-  - `FoodPrice`: Price of the dish.
-  - `FoodAvailable`: Availability status (e.g., 1 for available, 0 for unavailable).
-  - `CreatedBy`: User who added the menu item.
-  - `CreatedOn`: Timestamp when the menu item was created.
-- **Relationships**:
-  - Links to the `CategoryMaster` table via `FoodCategoryId`.
-
-#### OrderHeader Table
-- **Purpose**: Acts as the main table for tracking customer orders.
-- **Attributes**:
-  - `OrderId` (Primary Key): Unique identifier for each order.
-  - `OrderDate`: Date of the order.
-  - `DeliveryMode`: Mode of delivery (e.g., dine-in, takeaway, home delivery).
-  - `TableNo`: Table number for dine-in orders.
-  - `CreateBy`: The user who created the order.
-  - `CreatedOn`: Timestamp when the order was created.
-  - `OrderStatus`: Status of the order (e.g., pending, completed, canceled).
-- **Relationships**:
-  - Links to the `OrderDetail` table via `OrderId`.
-  - Links to the `Invoice` table via `OrderId`.
-
-#### OrderDetail Table
-- **Purpose**: Tracks individual dishes ordered in an order.
-- **Attributes**:
-  - `OrderDtlId` (Primary Key): Unique identifier for each order detail record.
-  - `OrderId` (Foreign Key): Links to the `OrderHeader` table to group items under a single order.
-  - `MenuId` (Foreign Key): Links to the `Menu` table to identify the dish ordered.
-  - `NoOfItem`: Number of items ordered for the specific dish.
-  - `CreatedBy`: User who recorded the order detail.
-  - `CreatedOn`: Timestamp when the order detail was created.
-- **Relationships**:
-  - Links to the `OrderHeader` table via `OrderId`.
-  - Links to the `Menu` table via `MenuId`.
-
-#### Key Relationships
-- **Menu to CategoryMaster**: Each menu item belongs to a specific category (`FoodCategoryId` → `CatId`).
-- **OrderHeader to OrderDetail**: Each order can have multiple dishes, but each dish belongs to one order (`OrderId` → `OrderId`).
-- **OrderHeader to Invoice**: Each order has one corresponding invoice (`OrderId` → `OrderId`).
-- **OrderDetail to Menu**: Tracks the specific dishes ordered and their details (`MenuId` → `MenuId`).
-
-#### Why This Design is Effective
-1. **Normalization**: The tables are properly normalized to eliminate redundancy:
-   - Categories and menu items are stored separately, reducing duplication.
-   - Orders and order details are segregated to allow flexibility in managing individual dishes.
-2. **Scalability**: New categories, dishes, or payment modes can be easily added without affecting the existing structure.
-3. **Clear Relationships**: Foreign key constraints ensure data integrity between related tables.
-4. **Flexibility**: The separation of `OrderHeader` and `OrderDetail` tables allows handling complex orders with multiple items seamlessly.
-
-#### Conclusion
-This ER Diagram represents a highly structured and scalable database for a Restaurant Management System. It supports essential functionalities like managing users, categorizing food items, tracking orders, and handling invoices effectively. The relationships between tables ensure data integrity and easy navigation within the system.
-
+- **Frontend**: Razor Pages with a touch of **JQuery** and **Ajax**.
+- **Backend**:
+  - **Framework**: ASP.NET Core 8 MVC
+  - **Architecture**: Microservices
+- **Database**: MS SQL Server
+- **Others**: RESTful APIs for seamless communication between services.
 
 ---
 
-## 🔒 **Non-Functional Requirements**
-- **Scalable:** Modular design to support future feature additions and user growth.
-- **Secure:** Adheres to industry-standard secure coding practices.
-- **Performance:** Optimized for fast response times and efficient database queries.
-- **Reliable:** Fault-tolerant to ensure uninterrupted service.
+## 🚀 **Getting Started**
+
+### **Prerequisites**
+
+Ensure you have the following installed:
+
+- **.NET 8 SDK**
+- **MS SQL Server**
+- **Visual Studio 2022**
+
+### **Installation**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/restaurant-management-system.git
+   cd restaurant-management-system
+   ```
+2. Open the solution in **Visual Studio 2022**.
+
+3. Set up the database:
+
+   - Restore the database from the provided `.bak` file or run the scripts in the `/Database` folder.
+   - Update the connection string in `appsettings.json`.
+
+4. Build and run the project:
+
+   ```bash
+   dotnet build
+   dotnet run
+   ```
+
+5. Open your browser and navigate to `https://localhost:5001` or the configured URL.
 
 ---
 
-## 🚧 **Project Status**
-- **Development:** Work in progress (Stock management module under development).
-- **Deployment:** Not yet deployed.
+## 🖼 **Screenshots**
+
+### 🔹 **Home Page**
+
+![Login Page](https://via.placeholder.com/600x300.png?text=Home+Page+Preview)
+
+### 🔹 **Order Management**
+
+![Add Menu Page](https://via.placeholder.com/600x300.png?text=Order+Management+Preview)
+
+### 🔹 **Transaction History**
+
+![Show Menu Page](https://via.placeholder.com/600x300.png?text=Transaction+History+Preview)
 
 ---
 
-## 🖥️ **Use Cases**
-1. **Waiters:** Take and manage customer orders with ease.
-2. **Chefs:** View real-time order details for preparation.
-3. **Admins:** Monitor transactions, update stocks, and oversee restaurant operations.
+## 🏗 **Planned Features**
+
+- 📦 **Stock Management**: Real-time inventory monitoring.
+- 📊 **Analytics Dashboard**: Gain insights into sales and operations.
+- 🛠 **Multi-language Support**: Cater to users worldwide.
 
 ---
 
-## 🌟 **Future Enhancements**
-1. **Integration of Stock Management Module.**  
-2. **Customer-facing Module** for reservations and feedback.  
-3. **Cloud Deployment** for enhanced accessibility and scalability.
+## 🤝 **Contributing**
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add some feature"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request.
 
 ---
 
-## 🧑‍💻 **Developer**
-This project is being developed by **Arghya Banerjee**, an individual developer building this system for free.
+## 📄 **License**
+
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 🤝 **Contributions**
-While this project is currently a solo effort, contributions and suggestions are always welcome! Feel free to fork the repo and raise a pull request.
+## 💬 **Contact**
+
+For queries or suggestions, feel free to reach out:  
+📧 **Email**: [your-email@example.com](mailto:your-email@example.com)  
+🔗 **LinkedIn**: [Your LinkedIn](https://linkedin.com/in/your-profile)
+
+---
+
+⭐ **Star this repository** if you found it useful!  
+👥 **Share** it with others who might benefit from it.
