@@ -1,0 +1,202 @@
+﻿@{
+    ViewData["Title"] = "Take Order";
+    var tableNum = 0;
+    tableNum = Context.Session.GetObjectFromJson<int>("TableNumber");
+}
+
+@model List<MenuModel>
+
+<!-- Include Bootstrap and jQuery -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Page CSS -->
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    .search-input {
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #1f1f1f;
+        border: 1px solid #424242;
+        color: #ffffff;
+    }
+
+    .table th, .table td {
+        background-color: #1f1f1f;
+        color: #f8f9fa; /* Make menu list text whiter */
+        border-top: 1px solid #424242;
+    }
+
+    .table th {
+        background-color: #292929;
+        font-weight: bold;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #242424;
+    }
+
+    .table-striped tbody tr:hover {
+        background-color: #383838;
+    }
+
+    .cart-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #292929;
+        color: #ffffff;
+        border-radius: 50px;
+        padding: 10px 20px;
+    }
+
+    .cart-btn:hover {
+        background-color: #383838;
+    }
+
+    .modal-header .modal-title {
+        color: #ffffff !important;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .modal-header {
+        background-color: #1f1f1f;
+        border-bottom: 1px solid #424242;
+    }
+
+    .modal-content {
+        background-color: #1f1f1f;
+        color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-footer {
+        border-top: 1px solid #424242;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+</style>
+
+<div class="container">
+    <h2 class="my-4">Menu</h2>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchInput" class="search-input" placeholder="Search for items...">
+
+    <!-- Menu Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.foodname</td>
+                    <td>₹@item.foodprice</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="showQuantityModal('@item.menuid', '@item.foodname', '@item.foodprice')">
+                            Add to Cart
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Cart Button -->
+<button class="btn cart-btn" onclick="window.location.href='@Url.Action("ViewCart", "Cart")'">
+    &#128722; View Cart
+</button>
+
+<!-- Import Modals -->
+@await Html.PartialAsync("_QuantityModal")
+@await Html.PartialAsync("_ItemAddedModal")
+@await Html.PartialAsync("_TableNumberModal")
+
+<!-- JavaScript -->
+<script>
+    $(document).ready(function () {
+        var tableNumber = @tableNum
+        if (tableNumber === 0) {
+            $('#tableNumberModal').modal('show');
+        }
+    });
+
+    $('#submitTableNumberBtn').click(function () {
+        const tableNumber = $('#tableNumberInput').val();
+        $.post('@Url.Action("GetTableNumber", "Cart")', {tableNumber: tableNumber});
+        $('#tableNumberModal').modal('hide');
+    });
+
+    let selectedItem = null;
+
+    function showQuantityModal(itemId, itemName, price) {
+        selectedItem = { itemId, itemName, price };
+        document.getElementById("newQuantity").value = "";
+        $('#quantityModal').modal('show');
+    }
+
+    $('#saveQuantityBtn').click(function () {
+        const quantity = $('#newQuantity').val();
+        if (quantity && quantity > 0) {
+            $.post('@Url.Action("AddToCart", "Cart")', {
+                itemId: selectedItem.itemId,
+                itemName: selectedItem.itemName,
+                price: selectedItem.price,
+                quantity: quantity
+            }, function (response) {
+                if (response.success) {
+                    $('#quantityModal').modal('hide');
+                    $('#itemAddedModal').modal('show');
+                } else {
+                    alert("Failed to add item.");
+                }
+            });
+        } else {
+            alert("Please enter a valid quantity.");
+        }
+    });
+
+    $('#quantityModalCloseBtn').click(function () {
+        $('#quantityModal').modal('hide');
+    });
+
+    $('#quantityModalCrossBtn').click(function () {
+        $('#quantityModal').modal('hide');
+    });
+
+    $('#continueShoppingBtn').click(function () {
+        $('#itemAddedModal').modal('hide');
+    });
+
+    $('#viewCartBtn').click(function () {
+        window.location.href = '@Url.Action("ViewCart", "Cart")';
+    });
+
+    $('#itemAddModalCrossBtn').click(function () {
+        $('#itemAddModal').modal('hide');
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        document.querySelectorAll('.table tbody tr').forEach(row => {
+            const itemName = row.cells[0].innerText.toLowerCase();
+            row.style.display = itemName.includes(filter) ? '' : 'none';
+        });
+    });
+</script>

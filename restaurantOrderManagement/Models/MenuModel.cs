@@ -3,7 +3,7 @@
     public class MenuModel
     {
         public int Opmode { get; set; }
-        public int menuid { get; set; }
+        public long menuid { get; set; }
         public string foodname { get; set; }
         public string fooddescription { get; set; }
         public int foodcategoryid { get; set; }

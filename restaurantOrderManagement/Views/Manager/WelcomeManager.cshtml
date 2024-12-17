@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Welcome Manager";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <!-- Greeting Message -->
+        <h1 class="display-4 text-danger">Welcome, <span class="text-light">@ViewBag.UserId!</span></h1>
+        <p class="lead text-light">Manage your inventory efficiently.</p>
+    </div>
+
+    <!-- First Row of Action Boxes -->
+    <div class="d-flex justify-content-center flex-wrap mt-5">
+        <!-- Box 1: Add Stock -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #2c2c2c; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title text-danger">Add Stock</h5>
+                <p class="card-text">Enter new stock into your inventory.</p>
+                <a href="/Stock/Add" class="btn btn-danger">Add Stock</a>
+            </div>
+        </div>
+
+        <!-- Box 2: Place Stock Order -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #2c2c2c; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title text-danger">Place Stock Order</h5>
+                <p class="card-text">Order more supplies from suppliers.</p>
+                <a href="/Orders/PlaceStockOrder" class="btn btn-danger">Place Order</a>
+            </div>
+        </div>
+
+        <!-- Box 3: See Stock Status -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #2c2c2c; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title text-danger">See Stock Status</h5>
+                <p class="card-text">View the current status of all stock items.</p>
+                <a href="/Stock/Status" class="btn btn-danger">View Stock</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Row of Action Boxes -->
+    <div class="d-flex justify-content-center flex-wrap mt-5">
+        <!-- Box 4: Show Product Details -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #2c2c2c; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title text-danger">Show Product Details</h5>
+                <p class="card-text">Examine details and specifications of each product.</p>
+                <a href="/Manager/ShowProductDetails" class="btn btn-danger">Show Details</a>
+            </div>
+        </div>
+
+        <!-- Box 5: Show Supplier Details -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #2c2c2c; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title text-danger">Show Supplier Details</h5>
+                <p class="card-text">View contact and service information of suppliers.</p>
+                <a href="/Supplier/Details" class="btn btn-danger">Supplier Details</a>
+            </div>
+        </div>
+
+        <!-- Box 6: Show Order Details -->
+        <div class="card text-center mx-2 my-2" style="width: 18rem; background-color: #2c2c2c; color: #ffffff; border: 1px solid #444;">
+            <div class="card-body">
+                <h5 class="card-title text-danger">Show Order Details</h5>
+                <p class="card-text">Access detailed records of past orders and their statuses.</p>
+                <a href="/Orders/Details" class="btn btn-danger">Order Details</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,215 @@
+﻿@{
+    ViewData["Title"] = "View Cart";
+}
+
+@model List<CartItem>
+
+<!-- Include Bootstrap and jQuery -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    body {
+    background-color: #121212;
+    color: #ffffff;
+    }
+
+    .container {
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .table {
+    background-color: transparent;
+    color: #ffffff;
+    }
+
+    .table th {
+    background-color: #292929;
+    color: #ffffff;
+    font-weight: bold;
+    border-bottom: 2px solid #424242;
+    }
+
+    .table td {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border-top: 1px solid #424242;
+    vertical-align: middle;
+    }
+
+    .quantity-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+
+    .quantity-btn:hover {
+    background-color: #0056b3;
+    }
+
+    .empty-cart {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ff6b6b;
+    margin-top: 20px;
+    }
+
+    /* Ensure the badge text and background are visible */
+    .badge-info {
+    background-color: #17a2b8 !important; /* Bootstrap Info Blue */
+    color: #ffffff !important; /* Bright white text */
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    }
+
+    /* Add margin for better spacing */
+    .badge-info, .badge-warning {
+    margin-right: 1rem;
+    font-size: 1rem;
+    }
+
+    /* Optional: Highlight the container */
+    .table-number-container {
+    text-align: right;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #1f1f1f; /* Slightly lighter than dark theme */
+    color: #ffffff; /* White text */
+    border-radius: 8px;
+    }
+
+</style>
+
+@{
+    int tableNumber = Context.Session.GetObjectFromJson<int>("TableNumber");
+}
+
+<div class="container my-5">
+    <!-- Top Right Table Number -->
+    <div class="d-flex justify-content-end mb-2">
+        <span class="badge badge-info p-2" style="font-size: 1rem;">
+            Table Number: @tableNumber
+        </span>
+    </div>
+
+    <h2 class="mb-4 text-center">Your Cart</h2>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Total (₹)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr data-item-id="@item.ItemId" data-price="@item.Price">
+                        <td>@item.ItemName</td>
+                        <td>
+                            <span class="quantity-value">@item.Quantity</span>
+                        </td>
+                        <td>@item.Price</td>
+                        <td class="total-price">@(item.Quantity * item.Price)</td>
+                        <td>
+                            <button class="quantity-btn minus-btn">-</button>
+                            <button class="quantity-btn plus-btn">+</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right font-weight-bold">Grand Total:</td>
+                    <td id="grand-total" class="font-weight-bold">
+                        ₹@Model.Sum(x => x.Quantity * x.Price)
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Buttons: Add More Items and Place Order -->
+        <div class="d-flex justify-content-between mt-3">
+            <!-- Add More Items Button -->
+            <button id="addMoreItemsBtn" class="btn btn-primary" onclick="window.location.href='@Url.Action("WaiterTakeOrder", "Waiter")'">
+                Add More Items
+            </button>
+
+            <!-- Place Order Button -->
+            <button id="placeOrderBtn" class="btn btn-success" data-toggle="modal" data-target="#tableNumberModal">
+                Place Order
+            </button>
+        </div>
+    }
+    else
+    {
+        <p class="empty-cart">Your cart is empty!</p>
+    }
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        function updateRowTotal(row) {
+            const quantity = parseInt($(row).find('.quantity-value').text());
+            const price = parseFloat($(row).data('price'));
+            const total = quantity * price;
+            $(row).find('.total-price').text(total.toFixed(2));
+        }
+
+        function updateGrandTotal() {
+            let grandTotal = 0;
+            $('.total-price').each(function () {
+                grandTotal += parseFloat($(this).text());
+            });
+            $('#grand-total').text(`₹${grandTotal.toFixed(2)}`);
+        }
+
+        // Handle Plus Button Click
+        $('.plus-btn').click(function () {
+            const row = $(this).closest('tr');
+            const quantityElem = row.find('.quantity-value');
+            const itemId = row.data('item-id');
+            console.log(itemId);
+            let quantity = parseInt(quantityElem.text());
+            quantity++;
+            quantityElem.text(quantity);
+
+            updateRowTotal(row);
+            updateGrandTotal();
+            $.post('/Cart/UpdateQuantity', { updateItemId: itemId, newQuantity: quantity });
+        });
+
+        // Handle Minus Button Click
+        $('.minus-btn').click(function () {
+            const row = $(this).closest('tr');
+            const quantityElem = row.find('.quantity-value');
+            const itemId = row.data('item-id');
+            console.log(itemId);
+            let quantity = parseInt(quantityElem.text());
+            if (quantity > 1) { // Ensure quantity is not less than 1
+                quantity--;
+                quantityElem.text(quantity);
+
+                updateRowTotal(row);
+                updateGrandTotal();
+                $.post('/Cart/UpdateQuantity', { updateItemId: itemId, newQuantity: quantity });
+            }
+        });
+    });
+</script>

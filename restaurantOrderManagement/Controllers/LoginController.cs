@@ -43,7 +43,7 @@ namespace restaurantOrderManagement.Controllers
 
                     if (objLogin.UserType == 1) // Waiter user
                     {
-                        objsession.vUserRole = UserRole.waiter;
+                        objsession.vUserRole = UserRole.Waiter;
                         HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
 
                         // Return JSON response with redirect URL
@@ -51,6 +51,14 @@ namespace restaurantOrderManagement.Controllers
                         
                         ViewBag.UserId = StringUtility.toTitleCase(objsession.UserId);
                         return View("~/Views/waiter/WelcomeWaiter.cshtml");
+                    }
+                    if (objLogin.UserType == 4) // Manager user
+                    {
+                        objsession.vUserRole = UserRole.Manager;
+                        HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
+
+                        ViewBag.UserId = StringUtility.toTitleCase(objsession?.UserId);
+                        return View("~/Views/Manager/WelcomeManager.cshtml");
                     }
                 }
                 else

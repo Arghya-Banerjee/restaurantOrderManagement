@@ -74,3 +74,26 @@ body {
     color: #aaaaaa; /* Lighter footer text */
     border-color: #333333;
 }
+
+/* Global styling for the scrollbar */
+::-webkit-scrollbar {
+    width: 8px; /* Adjusts the width of the vertical scrollbar */
+    height: 8px; /* Adjusts the height of the horizontal scrollbar */
+}
+
+/* Styling the track */
+::-webkit-scrollbar-track {
+    background: #1e1e1e; /* Same as the background to blend in */
+}
+
+/* Styling the thumb */
+::-webkit-scrollbar-thumb {
+    background-color: #2a2a2a; /* Slightly lighter than the track for visibility */
+    border: none; /* Removing any borders */
+}
+
+    /* Enhancing the thumb on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #333333; /* A bit lighter on hover to indicate interactability */
+    }
+

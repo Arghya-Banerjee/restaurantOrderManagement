@@ -14,7 +14,7 @@ namespace restaurantOrderManagement.Controllers
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
 
-            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.waiter)
+            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
             {
                 return RedirectToAction("LoginPage", "Login");
             }
@@ -34,7 +34,7 @@ namespace restaurantOrderManagement.Controllers
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
 
-            if(sessionDetails == null || sessionDetails.vUserRole != UserRole.waiter)
+            if(sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
             {
                 return RedirectToAction("LoginPage", "Login");
             }
@@ -56,5 +56,21 @@ namespace restaurantOrderManagement.Controllers
 
             return RedirectToAction("WelcomeWaiter", "Waiter");
         }
+
+        public IActionResult WaiterTakeOrder()
+        {
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+            if(sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+
+            string userid = StringUtility.toTitleCase(sessionDetails.UserId);
+            MenuModel menuDummy = new MenuModel();
+            menuDummy.Opmode = 0;
+            List<MenuModel> menuList = DBOperations<MenuModel>.GetAllOrByRange(menuDummy, Constant.usp_Menu);
+            return View(menuList);
+        }
+
     }
 }

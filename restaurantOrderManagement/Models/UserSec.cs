@@ -15,10 +15,10 @@
 
     public enum UserRole
     {
-        waiter = 1,
+        Waiter = 1,
         Admin = 2,
-        Accounts = 3,
-        Other = 4
+        Cashier = 3,
+        Manager = 4
 
     }
 

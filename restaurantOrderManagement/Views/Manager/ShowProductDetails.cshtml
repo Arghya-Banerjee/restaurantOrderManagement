@@ -1,8 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "Menu Page";
+    ViewData["Title"] = "Show Product Details";
 }
 
-@model restaurantOrderManagement.ViewModels.MenuViewModel
+@model restaurantOrderManagement.ViewModels.ProductDetailsViewModel
 
 <style>
     body {
@@ -108,13 +108,14 @@
                 transition: background-color 0.3s;
             }
 
-        /* .table td:nth-child(3), /* Category column */ */
-        /* .table td:nth-child(4) /* Price column */ { */
+    /* .table td:nth-child(3), /* Category column */ */
+    /* .table td:nth-child(4) /* Price column */ {
+        */
         /*     text-align: center; /* Center alignment */ */
         /* } */
+        .no-data
 
-
-    .no-data {
+    {
         text-align: center;
         padding: 20px;
         color: #888;
@@ -128,7 +129,7 @@
     <div class="filter-container">
         <select id="categoryDropdown" class="dropdown">
             <option value="All">All Categories</option>
-            @foreach (var category in Model.menuItems.Select(m => m.categoryname).Distinct())
+            @foreach (var category in Model.stockCategory.Select(m => m.CategoryName).Distinct())
             {
                 <option value="@category">@category</option>
             }
@@ -136,25 +137,29 @@
         <input type="text" id="searchInput" class="search-input" placeholder="Search for food items...">
     </div>
 
-    @if (Model.menuItems != null && Model.menuItems.Any())
+    @if (Model.stockProductDetails != null && Model.stockProductDetails.Any())
     {
         <table class="table">
             <thead>
                 <tr>
-                    <th>Food Name</th>
-                    <th>Description</th>
+                    <th>Product ID</th>
+                    <th>Name</th>
                     <th>Category</th>
+                    <th>Supplier</th>
                     <th>Price</th>
+                    <th>Unit</th>
                 </tr>
             </thead>
-            <tbody class="contents">
-                @foreach (var menuitem in Model.menuItems)
+            <tbody>
+                @foreach (var productItem in Model.stockProductDetails)
                 {
-                    <tr data-category="@menuitem.categoryname">
-                        <td>@menuitem.foodname</td>
-                        <td>@menuitem.fooddescription</td>
-                        <td>@menuitem.categoryname</td>
-                        <td>@menuitem.foodprice</td>
+                    <tr data-category="@productItem.CategoryName">
+                        <td>@productItem.ProductId</td>
+                        <td>@productItem.ProductName</td>
+                        <td>@productItem.CategoryName</td>
+                        <td>@productItem.SupplierName</td>
+                        <td>@productItem.Price</td>
+                        <td>@productItem.Unit</td>
                     </tr>
                 }
             </tbody>

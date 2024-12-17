@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Cart>
+  <Item>
+    <ItemId>9</ItemId>
+    <ItemName>Rogan Josh</ItemName>
+    <Quantity>4</Quantity>
+    <Price>320</Price>
+  </Item>
+  <Item>
+    <ItemId>14</ItemId>
+    <ItemName>Egg Curry</ItemName>
+    <Quantity>2</Quantity>
+    <Price>180</Price>
+  </Item>
+  <Item>
+    <ItemId>9</ItemId>
+    <ItemName>Rogan Josh</ItemName>
+    <Quantity>3</Quantity>
+    <Price>320</Price>
+  </Item>
+  <Item>
+    <ItemId>7</ItemId>
+    <ItemName>Tandoori Chicken</ItemName>
+    <Quantity>3</Quantity>
+    <Price>450</Price>
+  </Item>
+  <Item>
+    <ItemId>5</ItemId>
+    <ItemName>Fish and Chips</ItemName>
+    <Quantity>5</Quantity>
+    <Price>200</Price>
+  </Item>
+  <Item>
+    <ItemId>12</ItemId>
+    <ItemName>Chicken Biryani</ItemName>
+    <Quantity>2</Quantity>
+    <Price>250</Price>
+  </Item>
+  <Item>
+    <ItemId>8</ItemId>
+    <ItemName>Butter Chicken</ItemName>
+    <Quantity>9</Quantity>
+    <Price>280</Price>
+  </Item>
+</Cart>
