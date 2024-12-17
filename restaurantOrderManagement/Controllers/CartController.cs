@@ -2,12 +2,14 @@
 using System.Xml.Linq;
 
 public class CartController : Controller
-{
-    private readonly string xmlFilePath = "wwwroot/cart.xml";
+{   
+    //private readonly string xmlFilePath = "wwwroot/cart.xml";
 
     [HttpPost]
     public IActionResult AddToCart(int itemId, string itemName, decimal price, int quantity)
     {
+        int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
+        string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
         if (!System.IO.File.Exists(xmlFilePath))
         {
             var newCart = new XElement("cart");
@@ -32,6 +34,9 @@ public class CartController : Controller
     [HttpGet]
     public IActionResult ViewCart()
     {
+        int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
+        string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
+
         if (!System.IO.File.Exists(xmlFilePath))
         {
             return View(new List<CartItem>());
@@ -52,6 +57,9 @@ public class CartController : Controller
     [HttpPost]
     public IActionResult UpdateQuantity(int updateItemId, int newQuantity)
     {
+        int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
+        string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
+
         if (!System.IO.File.Exists(xmlFilePath))
         {
             return NotFound(new { success = false, message = "Cart not found." });
@@ -76,6 +84,12 @@ public class CartController : Controller
     {
         HttpContext.Session.SetObjectAsJson("TableNumber", tableNumber);
         return Json(new {success = true});
+    }
+
+    public IActionResult PlaceOrder()
+    {
+        ViewBag.OrderId = 121243;
+        return View();
     }
 }
 

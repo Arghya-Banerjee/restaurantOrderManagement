@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cart>
+  <Item>
+    <ItemId>10</ItemId>
+    <ItemName>Fish Curry</ItemName>
+    <Quantity>6</Quantity>
+    <Price>260</Price>
+  </Item>
+</cart>

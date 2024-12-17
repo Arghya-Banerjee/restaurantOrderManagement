@@ -123,7 +123,9 @@
                         <td>
                             <span class="quantity-value">@item.Quantity</span>
                         </td>
-                        <td>@item.Price</td>
+                        <td>₹@Math.Round((float)item.Price, 2)</td>
+
+
                         <td class="total-price">@(item.Quantity * item.Price)</td>
                         <td>
                             <button class="quantity-btn minus-btn">-</button>
@@ -151,7 +153,7 @@
             </button>
 
             <!-- Place Order Button -->
-            <button id="placeOrderBtn" class="btn btn-success" data-toggle="modal" data-target="#tableNumberModal">
+            <button id="placeOrderBtn" class="btn btn-success" onclick="window.location.href='@Url.Action("PlaceOrder", "Cart")'">
                 Place Order
             </button>
         </div>

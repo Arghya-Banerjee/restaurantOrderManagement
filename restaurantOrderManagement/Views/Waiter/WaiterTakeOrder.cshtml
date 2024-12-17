@@ -106,7 +106,7 @@
             {
                 <tr>
                     <td>@item.foodname</td>
-                    <td>₹@item.foodprice</td>
+                    <td>₹@Math.Round((float)item.foodprice, 2)</td>
                     <td>
                         <button class="btn btn-primary" onclick="showQuantityModal('@item.menuid', '@item.foodname', '@item.foodprice')">
                             Add to Cart

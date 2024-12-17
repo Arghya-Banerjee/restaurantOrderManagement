@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Order Placed";
+    var tableNumber = Context.Session.GetObjectFromJson<int>("TableNumber");
+}
+
+<!-- Include Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+    }
+
+    .thank-you-container {
+        margin-top: 100px;
+        text-align: center;
+        padding: 40px;
+        background-color: #1f1f1f;
+        border: 1px solid #292929;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .thank-you-icon {
+        font-size: 80px;
+        color: #28a745; /* Green for success */
+    }
+
+    .thank-you-text {
+        font-size: 28px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .thank-you-message {
+        font-size: 18px;
+        margin-top: 10px;
+        color: #d3d3d3;
+    }
+
+    .btn-custom {
+        margin-top: 30px;
+        padding: 10px 25px;
+        background-color: #292929;
+        color: #ffffff;
+        border: 1px solid #424242;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            background-color: #383838;
+            color: #f8f9fa;
+            border-color: #383838;
+        }
+
+    .order-details {
+        margin-top: 30px;
+        text-align: center;
+        color: #f8f9fa;
+    }
+
+        .order-details p {
+            margin: 5px 0;
+        }
+</style>
+
+<div class="container d-flex justify-content-center">
+    <div class="thank-you-container">
+        <div class="thank-you-icon">
+            &#10004; <!-- Checkmark icon -->
+        </div>
+        <div class="thank-you-text">
+            Thank You for Your Order!
+        </div>
+        <div class="thank-you-message">
+            Your order has been successfully placed.<br>
+            We'll start preparing it right away!
+        </div>
+
+        <!-- Optional: Display basic order summary -->
+        <div class="order-details">
+            <p><strong>Order Number:</strong> #@ViewBag.OrderId</p>
+            <p><strong>Table Number:</strong> @tableNumber</p>
+            <p><strong>Estimated Time:</strong> 15-20 minutes</p>
+        </div>
+
+        <!-- Buttons -->
+        <div>
+            <a href="@Url.Action("WelcomeWaiter", "Waiter")" class="btn btn-custom">Return to Home</a>
+            <a href="@Url.Action("ViewCart", "Cart")" class="btn btn-custom">View Cart</a>
+        </div>
+    </div>
+</div>
