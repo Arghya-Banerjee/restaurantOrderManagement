@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
+using restaurantOrderManagement.Models;
+using Core;
 
 public class CartController : Controller
 {   
@@ -88,8 +90,63 @@ public class CartController : Controller
 
     public IActionResult PlaceOrder()
     {
+
         ViewBag.OrderId = 121243;
+        int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
+        string UserID = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserId;
+        string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
+
+        XDocument xmlDoc = XDocument.Load(xmlFilePath);
+        var items = xmlDoc.Descendants("Item").Select(item => new
+        {
+            ItemID = (int)item.Element("ItemId"),
+            Quantity = (int)item.Element("Quantity")
+        });
+
+        // Insert Order Header Details
+
+        OrderHeaderModel orderHeader = new OrderHeaderModel();
+        orderHeader.Opmode = 0;
+        orderHeader.OrderDate = DateTime.Now;
+        orderHeader.DeliveryMode = 0;
+        orderHeader.TableNumber = tableNumber;
+        orderHeader.CreatedBy = UserID;
+        orderHeader.CreatedOn = DateTime.Now;
+        orderHeader.OrderStatus = 0;
+        int res = DBOperations<OrderHeaderModel>.DMLOperation(orderHeader, Constant.usp_OrderHeader);
+
+        // Fetch OrderID
+        
+        OrderHeaderModel orderHeaderDummy = new OrderHeaderModel();
+        orderHeaderDummy.Opmode = 1;
+        orderHeaderDummy.OrderDate = DateTime.Now;
+        orderHeaderDummy.TableNumber = tableNumber;
+        orderHeaderDummy.CreatedOn = DateTime.Now;
+        long headerID = DBOperations<OrderHeaderModel>.GetSpecific(orderHeaderDummy, Constant.usp_OrderHeader).OrderID;
+        ViewBag.OrderID = headerID;
+
+        // Insert Item Details
+
+        foreach (var item in items)
+        {
+            OrderDetailsModel itemDetails = new OrderDetailsModel();
+            itemDetails.OpMode = 0;
+            itemDetails.OrderID = headerID;
+            itemDetails.MenuID = item.ItemID;
+            itemDetails.Quantity = item.Quantity;
+            itemDetails.CreatedBy = UserID;
+            itemDetails.CreatedOn = DateTime.Now;
+            int x = DBOperations<OrderDetailsModel>.DMLOperation(itemDetails, Constant.usp_OrderDetails);
+        }
+
+        System.IO.File.Delete(xmlFilePath); //delete the XML after placing order
         return View();
+    }
+
+    public IActionResult NewOrder()
+    {
+        HttpContext.Session.SetObjectAsJson("TableNumber", 0);
+        return RedirectToAction("WelcomeWaiter", "Waiter");
     }
 }
 
