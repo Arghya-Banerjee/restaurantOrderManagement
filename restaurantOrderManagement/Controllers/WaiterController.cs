@@ -5,6 +5,7 @@ using restaurantOrderManagement.Models;  // Import your model or namespace for s
 
 using System.Globalization;
 using restaurantOrderManagement.Utility_Classes;
+using restaurantOrderManagement.ViewModels;
 
 namespace restaurantOrderManagement.Controllers
 {
@@ -72,5 +73,72 @@ namespace restaurantOrderManagement.Controllers
             return View(menuList);
         }
 
+        public IActionResult CurrentOrders()
+        {
+            string userId = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserId;
+
+            List<CurrentOrdersModel> currOrders = new List<CurrentOrdersModel>();
+            CurrentOrdersModel currOrderDummy = new CurrentOrdersModel();
+            currOrderDummy.OpMode = 1;
+            currOrders = DBOperations<CurrentOrdersModel>.GetAllOrByRange(currOrderDummy, Constant.usp_CurrentOrders);
+
+            return View(currOrders);
+        }
+
+        [HttpGet]
+        public IActionResult ShowBill(int tableNumber)
+        {
+
+            List<BillItemsModel> billItemList = new List<BillItemsModel>();
+            BillItemsModel billItemDummy = new BillItemsModel();
+            billItemDummy.OpMode = 0;
+            billItemDummy.TableNumber = tableNumber;
+            billItemList = DBOperations<BillItemsModel>.GetAllOrByRange(billItemDummy, Constant.usp_BillItems);
+
+            int taxPercentage = 5;
+            decimal totalAmt = 0;
+            foreach (var item in billItemList) 
+            {
+                totalAmt += (item.foodprice * item.Quantity);
+            }
+            decimal amtIncludingGST = (totalAmt * (100 + taxPercentage)) / 100;
+
+            OrderHeaderModel orderHeaderDummy = new OrderHeaderModel();
+            orderHeaderDummy.Opmode = 3;
+            orderHeaderDummy.TableNumber = tableNumber;
+            orderHeaderDummy.OrderDate = DateTime.Now;
+            orderHeaderDummy.CreatedOn = DateTime.Now;
+            OrderHeaderModel orderDetails = DBOperations<OrderHeaderModel>.GetSpecific(orderHeaderDummy, Constant.usp_OrderHeader);
+            long orderId = orderDetails.OrderID;
+            DateTime orderTime = orderDetails.CreatedOn;
+
+            BillViewModel billDetails = new BillViewModel();
+            billDetails.OrderId = orderId;
+            billDetails.BillItems = billItemList;
+            billDetails.TableNumber = tableNumber;
+            billDetails.TaxPercentage = taxPercentage;
+            billDetails.AmountExcludingGST = totalAmt;
+            billDetails.AmountIncludingGST = amtIncludingGST;
+            billDetails.OrderTime = orderTime;
+
+            return View(billDetails);
+        }
+
+        public IActionResult MarkAsCompleted(int tableNumber)
+        {
+            string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
+
+            OrderHeaderModel changeStutusDummy = new OrderHeaderModel();
+            changeStutusDummy.TableNumber = tableNumber;
+            changeStutusDummy.Opmode = 2;
+            changeStutusDummy.OrderStatus = 1;
+            changeStutusDummy.OrderDate = DateTime.Now;
+            changeStutusDummy.CreatedOn = DateTime.Now;
+            DBOperations<OrderHeaderModel>.DMLOperation(changeStutusDummy, Constant.usp_OrderHeader);
+
+            System.IO.File.Delete(xmlFilePath);
+
+            return View();
+        }
     }
 }

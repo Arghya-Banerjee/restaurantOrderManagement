@@ -1,0 +1,64 @@
+﻿@model restaurantOrderManagement.ViewModels.BillViewModel
+
+@{
+    ViewData["Title"] = "Bill for Order #" + Model.OrderId;
+}
+
+<div class="container mt-5">
+    <!-- Header Section -->
+    <div class="text-center">
+        <h1 class="display-4 text-primary">Thank You!</h1>
+        <h3 class="text-light">Your Bill for Table #@Model.TableNumber</h3>
+        <h5 class="text-secondary">Order Time: @Model.OrderTime.ToString("yyyy-MM-dd HH:mm")</h5>
+        <h5 class="text-secondary">Bill Generated: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</h5>
+    </div>
+
+    <!-- Bill Items Section -->
+    <div class="mt-5">
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+                <tr class="text-primary">
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price (per item)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.BillItems)
+                {
+                    <tr>
+                        <td>@item.foodname</td>
+                        <td>@item.Quantity</td>
+                        <td>₹@item.foodprice</td>
+                        <td>₹@(item.Quantity * item.foodprice)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3" class="text-end">Subtotal (Excluding GST)</td>
+                    <td>₹@Model.AmountExcludingGST</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-end">Tax (@Model.TaxPercentage%)</td>
+                    <td>₹@(Model.AmountIncludingGST - Model.AmountExcludingGST)</td>
+                </tr>
+                <tr class="fw-bold">
+                    <td colspan="3" class="text-end">Total (Including GST)</td>
+                    <td>₹@Model.AmountIncludingGST</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Payment Section -->
+    <div class="text-center mt-4">
+        <h4 class="text-success">Please pay: ₹@Model.AmountIncludingGST</h4>
+        <button class="btn btn-success btn-lg mt-3">Pay Now</button>
+    </div>
+
+    <!-- Rate Us Section -->
+    <div class="text-center mt-5">
+        <h4 class="text-primary">We hope you enjoyed our service!</h4>
+        <button class="btn btn-info btn-lg mt-3" onclick="window.location.href='/Feedback/RateUs'">Rate Us</button>
+    </div>
+</div>

@@ -139,7 +139,7 @@ public class CartController : Controller
             int x = DBOperations<OrderDetailsModel>.DMLOperation(itemDetails, Constant.usp_OrderDetails);
         }
 
-        System.IO.File.Delete(xmlFilePath); //delete the XML after placing order
+        //System.IO.File.Delete(xmlFilePath); //delete the XML after placing order
         return View();
     }
 

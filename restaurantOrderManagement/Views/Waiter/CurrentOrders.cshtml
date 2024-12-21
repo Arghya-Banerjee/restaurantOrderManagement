@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Current Orders";
+}
+
+@model List<restaurantOrderManagement.Models.CurrentOrdersModel>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <!-- Page Heading -->
+        <h1 class="display-4 text-primary">Current Orders</h1>
+        <p class="lead text-light">Manage all ongoing orders currently in progress.</p>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center mt-5">
+            <h3 class="text-secondary">No current orders found!</h3>
+            <p class="text-light">All caught up for now. Enjoy a coffee!</p>
+        </div>
+    }
+    else
+    {
+        <!-- Orders Table -->
+        <div class="table-responsive mt-4">
+            <table class="table table-dark table-striped table-hover align-middle">
+                <thead>
+                    <tr class="text-primary text-center">
+                        <th scope="col">OrderID</th>
+                        <th scope="col">Created By</th>
+                        <th scope="col">Table Number</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr class="text-center">
+                            <td>@order.OrderID</td>
+                            <td>@order.CreatedBy</td>
+                            <td>@order.TableNumber</td>
+                            <td>
+                                <a href="/Waiter/ShowBill?tableNumber=@order.TableNumber" class="btn btn-success btn-sm">Mark as Completed</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
