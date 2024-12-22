@@ -112,8 +112,25 @@ namespace restaurantOrderManagement.Controllers
             long orderId = orderDetails.OrderID;
             DateTime orderTime = orderDetails.CreatedOn;
 
+            InvoiceModel invoice = new InvoiceModel();
+            invoice.OpMode = 1;
+            invoice.OrderID = orderId;
+            invoice.InvoiceDate = DateTime.Now;
+            invoice.AmountExcludingGST = totalAmt;
+            invoice.GSTAmount = amtIncludingGST - totalAmt;
+            invoice.AmountIncludingGST = amtIncludingGST;
+            invoice.PaymentMode = 0; // default: cash
+            invoice.CreatedBy = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserId;
+            invoice.CreatedOn = DateTime.Now;
+            int res = DBOperations<InvoiceModel>.DMLOperation(invoice, Constant.usp_Invoice);
+
+            invoice.OpMode = 0;
+            invoice.InvoiceID = 0;
+            long invoiceId = DBOperations<InvoiceModel>.GetSpecific(invoice, Constant.usp_Invoice).InvoiceID;
+
             BillViewModel billDetails = new BillViewModel();
-            billDetails.OrderId = orderId;
+            billDetails.InvoiceID = invoiceId;
+            billDetails.OrderID = orderId;
             billDetails.BillItems = billItemList;
             billDetails.TableNumber = tableNumber;
             billDetails.TaxPercentage = taxPercentage;

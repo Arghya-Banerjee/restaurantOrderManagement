@@ -1,7 +1,7 @@
 ﻿@model restaurantOrderManagement.ViewModels.BillViewModel
 
 @{
-    ViewData["Title"] = "Bill for Order #" + Model.OrderId;
+    ViewData["Title"] = "Bill for Order #" + Model.OrderID.ToString("D6");
 }
 
 <div class="container mt-5">
@@ -9,8 +9,18 @@
     <div class="text-center">
         <h1 class="display-4 text-primary">Thank You!</h1>
         <h3 class="text-light">Your Bill for Table #@Model.TableNumber</h3>
-        <h5 class="text-secondary">Order Time: @Model.OrderTime.ToString("yyyy-MM-dd HH:mm")</h5>
-        <h5 class="text-secondary">Bill Generated: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</h5>
+    </div>
+    <div class="row mt-3">
+        <!-- Time on the Left -->
+        <div class="col text-start">
+            <h5 class="text-secondary">Order Time: @Model.OrderTime.ToString("yyyy-MM-dd HH:mm")</h5>
+            <h5 class="text-secondary">Bill Generated: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</h5>
+        </div>
+        <!-- IDs on the Right -->
+        <div class="col text-end">
+            <h5 class="text-secondary">Order ID: #@Model.OrderID.ToString("D6")</h5>
+            <h5 class="text-secondary">Invoice ID: #@Model.InvoiceID.ToString("D6")</h5>
+        </div>
     </div>
 
     <!-- Bill Items Section -->

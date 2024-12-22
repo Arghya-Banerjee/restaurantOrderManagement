@@ -5,7 +5,7 @@
         public int OpMode { get; set; }
         public long InvoiceID { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public int OrderID { get; set; }
+        public long OrderID { get; set; }
         public decimal AmountExcludingGST { get; set; }
         public decimal GSTAmount { get; set; }
         public decimal AmountIncludingGST { get; set; }
