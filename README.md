@@ -6,7 +6,7 @@ A comprehensive and scalable solution for managing restaurant operations seamles
 
 ## 📌 **Overview**
 
-The **Restaurant Management System** is a robust, feature-packed web application built using modern technologies to simplify the day-to-day operations of restaurants. Designed for slightly tech-savvy restaurant owners, it integrates **order management**, **transaction tracking**, and **daily operations** into one cohesive platform, with planned extensions for **stock management**.
+The **Restaurant Management System** is a robust, feature-packed web application built using modern technologies to simplify the day-to-day operations of restaurants. Designed for slightly tech-savvy restaurant owners, it integrates **order management**, **transaction tracking**, and **daily operations** into one cohesive platform, with planned extensions for **stock management** and **analytics dashboards**.
 
 ---
 
@@ -16,8 +16,9 @@ The **Restaurant Management System** is a robust, feature-packed web application
 - 💵 **Transaction History**: Keep track of all financial transactions for better accountability.
 - 📆 **Daily Operations Management**: Automate repetitive tasks and optimize workflows.
 - 🛒 **Planned Feature**: Stock management to monitor inventory levels in real-time.
-- 🏗 **Scalable Architecture**: Built using microservices for future-proof scalability.
-- 🔒 **Secure Design**: Employs best practices for data security and user authentication.
+- 🛠 **Microservice Updates**: Enhanced communication between services via RESTful APIs.
+- 🔒 **Secure Design**: Employs best practices for data security, user authentication, and role-based access control.
+- 🎨 **Updated Feature**: Improved "MarkAsCompleted" action, now rebranded to **ShowBill** for better clarity and enhanced functionality.
 
 ---
 
@@ -71,23 +72,35 @@ Ensure you have the following installed:
 
 ### 🔹 **Login Page**
 
-![image](https://github.com/user-attachments/assets/9f6ad3a0-5813-4066-ad4f-185e73567e6e)
+![Login Page](https://github.com/user-attachments/assets/9f6ad3a0-5813-4066-ad4f-185e73567e6e)
 
 ### 🔹 **Show Menu Page**
 
-![image](https://github.com/user-attachments/assets/b0883cf4-1c0e-4074-b481-3ffee4f7b974)
+![Show Menu Page](https://github.com/user-attachments/assets/b0883cf4-1c0e-4074-b481-3ffee4f7b974)
 
 ### 🔹 **Add Menu Page**
 
-![image](https://github.com/user-attachments/assets/34720807-7181-4475-bdd5-67c4eab58bb8)
+![Add Menu Page](https://github.com/user-attachments/assets/34720807-7181-4475-bdd5-67c4eab58bb8)
 
 ---
 
-## 🏗 **Planned Features**
+## 🏗 **Planned Features and Future Scope**
 
-- 📦 **Stock Management**: Real-time inventory monitoring.
-- 📊 **Analytics Dashboard**: Gain insights into sales and operations.
-- 🛠 **Multi-language Support**: Cater to users worldwide.
+### **Planned Features**
+
+- 📦 **Stock Management**: Real-time inventory monitoring with low-stock alerts.
+- 🔄 **Analytics Dashboard**: Gain insights into sales, revenue trends, and customer behavior.
+- 🔄 **Multi-language Support**: Cater to users worldwide with multilingual capabilities.
+- ⏲ **Reservation System**: Integrate table booking functionalities with real-time availability.
+- 🚨 **Advanced Alerts**: Notifications for pending orders, delayed services, or system errors.
+
+### **Future Scope**
+
+- **AI-Powered Recommendations**: Suggest optimized menus based on sales trends and customer preferences.
+- **Integration with Payment Gateways**: Enable seamless payment options through popular platforms like PayPal, Stripe, and UPI.
+- **Cloud-Based Deployment**: Ensure high availability and global accessibility by deploying the system on Azure or AWS.
+- **Mobile App Development**: Complement the web application with native mobile apps for Android and iOS.
+- **Customer Feedback Module**: Gather and analyze customer feedback for service improvement.
 
 ---
 
@@ -121,8 +134,8 @@ This project is licensed under the [MIT License](LICENSE).
 ## 💬 **Contact**
 
 For queries or suggestions, feel free to reach out:  
-📧 **Email**: [your-email@example.com](mailto:your-email@example.com)  
-🔗 **LinkedIn**: [Your LinkedIn](https://linkedin.com/in/your-profile)
+📧 **Email**: [arghya.banerjee.dev@gmail.com](mailto:arghya.banerjee.dev@gmail.com)  
+🔗 **LinkedIn**: [Arghya Banerjee](https://linkedin.com/in/arghya-banerjee17)
 
 ---
 

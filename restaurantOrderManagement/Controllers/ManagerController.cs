@@ -23,10 +23,10 @@ namespace restaurantOrderManagement.Controllers
                 return RedirectToAction("LoginPage", "Login");
             }
 
-            string userName = sessionDetails.UserId;
+            string userName = sessionDetails.UserID;
             userName = StringUtility.toTitleCase(userName);
 
-            ViewBag.UserId = sessionDetails.UserId;
+            ViewBag.UserId = sessionDetails.UserID;
 
             return View();
         }

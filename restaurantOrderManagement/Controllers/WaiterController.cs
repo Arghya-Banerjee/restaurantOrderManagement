@@ -22,11 +22,11 @@ namespace restaurantOrderManagement.Controllers
 
             TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
-            string userName = sessionDetails.UserId;
+            string userName = sessionDetails.UserID;
             userName = ti.ToTitleCase(userName);
             Console.WriteLine(userName);
 
-            ViewBag.UserId = sessionDetails.UserId;
+            ViewBag.UserId = sessionDetails.UserID;
 
             return View();
         }
@@ -40,7 +40,7 @@ namespace restaurantOrderManagement.Controllers
                 return RedirectToAction("LoginPage", "Login");
             }
 
-            ViewBag.userId = sessionDetails.UserId;
+            ViewBag.userId = sessionDetails.UserID;
 
             return View();
         }
@@ -49,7 +49,7 @@ namespace restaurantOrderManagement.Controllers
         {
             menu.Opmode = 3;
             UserSec userSession = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
-            string userid = userSession.UserId;
+            string userid = userSession.UserID;
             userid = StringUtility.toTitleCase(userid);
             menu.createdby = userid;
 
@@ -66,7 +66,7 @@ namespace restaurantOrderManagement.Controllers
                 return RedirectToAction("LoginPage", "Login");
             }
 
-            string userid = StringUtility.toTitleCase(sessionDetails.UserId);
+            string userid = StringUtility.toTitleCase(sessionDetails.UserID);
             MenuModel menuDummy = new MenuModel();
             menuDummy.Opmode = 0;
             List<MenuModel> menuList = DBOperations<MenuModel>.GetAllOrByRange(menuDummy, Constant.usp_Menu);
@@ -75,7 +75,7 @@ namespace restaurantOrderManagement.Controllers
 
         public IActionResult CurrentOrders()
         {
-            string userId = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserId;
+            string userId = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
 
             List<CurrentOrdersModel> currOrders = new List<CurrentOrdersModel>();
             CurrentOrdersModel currOrderDummy = new CurrentOrdersModel();
@@ -120,7 +120,7 @@ namespace restaurantOrderManagement.Controllers
             invoice.GSTAmount = amtIncludingGST - totalAmt;
             invoice.AmountIncludingGST = amtIncludingGST;
             invoice.PaymentMode = 0; // default: cash
-            invoice.CreatedBy = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserId;
+            invoice.CreatedBy = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
             invoice.CreatedOn = DateTime.Now;
             int res = DBOperations<InvoiceModel>.DMLOperation(invoice, Constant.usp_Invoice);
 

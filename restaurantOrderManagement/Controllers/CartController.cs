@@ -93,7 +93,7 @@ public class CartController : Controller
 
         ViewBag.OrderId = 121243;
         int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
-        string UserID = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserId;
+        string UserID = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
         string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
 
         XDocument xmlDoc = XDocument.Load(xmlFilePath);

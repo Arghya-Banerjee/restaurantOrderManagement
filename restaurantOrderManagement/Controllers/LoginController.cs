@@ -26,7 +26,7 @@ namespace restaurantOrderManagement.Controllers
                 UserLogin obj = new UserLogin
                 {
                     Opmode = 0,
-                    UserId = username,
+                    UserID = username,
                     PassCode = password
                 };
 
@@ -38,7 +38,7 @@ namespace restaurantOrderManagement.Controllers
                     objsession.Id = objLogin.Id;
                     objsession.MobileNumber = objLogin.MobileNumber;
                     objsession.Email = objLogin.Email;
-                    objsession.UserId = objLogin.UserId;
+                    objsession.UserID = objLogin.UserID;
                     objsession.UserType = objLogin.UserType;
 
                     if (objLogin.UserType == 1) // Waiter user
@@ -49,7 +49,7 @@ namespace restaurantOrderManagement.Controllers
                         // Return JSON response with redirect URL
                         //return Json(new { success = 1, message = "Login Successful", redirectUrl = Url.Action("WelcomeWaiter", "Waiter") });
                         
-                        ViewBag.UserId = StringUtility.toTitleCase(objsession.UserId);
+                        ViewBag.UserId = StringUtility.toTitleCase(objsession.UserID);
                         return View("~/Views/waiter/WelcomeWaiter.cshtml");
                     }
                     if (objLogin.UserType == 4) // Manager user
@@ -57,7 +57,7 @@ namespace restaurantOrderManagement.Controllers
                         objsession.vUserRole = UserRole.Manager;
                         HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
 
-                        ViewBag.UserId = StringUtility.toTitleCase(objsession?.UserId);
+                        ViewBag.UserId = StringUtility.toTitleCase(objsession?.UserID);
                         return View("~/Views/Manager/WelcomeManager.cshtml");
                     }
                 }

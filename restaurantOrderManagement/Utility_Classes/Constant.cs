@@ -8,5 +8,6 @@
     public static string usp_CurrentOrders = "usp_CurrentOrders";
     public static string usp_BillItems = "usp_BillItems";
     public static string usp_Invoice = "usp_Invoice";
+    public static string usp_Rating = "usp_Rating";
 }
 
