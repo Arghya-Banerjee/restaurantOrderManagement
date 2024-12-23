@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cart>
+  <Item>
+    <ItemId>7</ItemId>
+    <ItemName>Tandoori Chicken</ItemName>
+    <Quantity>2</Quantity>
+    <Price>450</Price>
+  </Item>
+  <Item>
+    <ItemId>8</ItemId>
+    <ItemName>Butter Chicken</ItemName>
+    <Quantity>1</Quantity>
+    <Price>280</Price>
+  </Item>
+</cart>

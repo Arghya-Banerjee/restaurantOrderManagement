@@ -7,119 +7,100 @@
 <style>
     body {
         font-family: 'Arial', sans-serif;
-        background-color: #121212; /* Dark background */
-        color: #e0e0e0; /* Light text for contrast */
+        background-color: #121212;
+        color: #e0e0e0;
         margin: 0;
         padding: 0;
     }
 
     h1 {
-        color: #f4b400; /* Gold accent */
+        color: #f4b400;
         text-align: center;
         margin-top: 20px;
         font-size: 2.5rem;
     }
 
-    .table-container {
-        max-width: 80%;
+    .menu-container {
+        max-width: 90%;
         margin: 30px auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
         padding: 20px;
-        background-color: #1e1e1e; /* Slightly lighter dark */
+        background-color: #1e1e1e;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .menu-item {
+        background-color: #2a2a2a;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 2px solid #f4b400;
+        }
+
+    .menu-item-content {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .menu-item-title {
+        font-size: 1.25rem;
+        color: #f4b400;
+        margin-bottom: 8px;
+    }
+
+    .menu-item-description {
+        font-size: 0.9rem;
+        color: #cfcfcf;
+        margin-bottom: 12px;
+        height: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .menu-item-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #f4b400;
+        text-align: center;
+        margin-top: 10px;
     }
 
     .filter-container {
         display: flex;
         justify-content: center;
-        align-items: center;
         gap: 10px;
         margin-bottom: 20px;
     }
 
-    .dropdown {
-        padding: 10px 15px; /* Adjust padding to match the search box */
-        height: 100%; /* Ensures consistent height */
-        border: 1px solid #333;
-        border-radius: 4px;
-        background-color: #1e1e1e; /* Match table background */
-        color: #e0e0e0;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-
-        .dropdown:focus {
-            outline: none;
-            border-color: #f4b400; /* Highlight on focus */
-            box-shadow: 0 0 8px #f4b400;
-        }
-
-    .search-input {
-        width: 100%;
+    .dropdown, .search-input {
         padding: 10px 15px;
         border: 1px solid #333;
         border-radius: 4px;
-        background-color: #1e1e1e; /* Match table background */
+        background-color: #1e1e1e;
         color: #e0e0e0;
         font-size: 1rem;
     }
 
-        .search-input::placeholder {
-            color: #888; /* Placeholder text color */
-        }
-
-        .search-input:focus {
+        .dropdown:focus, .search-input:focus {
             outline: none;
-            border-color: #f4b400; /* Highlight on focus */
+            border-color: #f4b400;
             box-shadow: 0 0 8px #f4b400;
         }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-        .table th, .table td {
-            text-align: left;
-            padding: 12px 15px;
-            border-bottom: 1px solid #444; /* Subtle border */
-        }
-
-        .table th {
-            background-color: #333; /* Darker header */
-            color: #f4b400; /* Gold text for header */
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .table tr {
-            background-color: #1e1e1e; /* Row background color */
-            color: #e0e0e0; /* Lighter text */
-        }
-
-            .table tr:nth-child(even) {
-                background-color: #2a2a2a; /* Alternating row color */
-            }
-
-            .table tr:hover {
-                background-color: #444; /* Highlight on hover */
-                transition: background-color 0.3s;
-            }
-
-        /* .table td:nth-child(3), /* Category column */ */
-        /* .table td:nth-child(4) /* Price column */ { */
-        /*     text-align: center; /* Center alignment */ */
-        /* } */
-
-
-    .no-data {
-        text-align: center;
-        padding: 20px;
-        color: #888;
-        font-style: italic;
-    }
 </style>
 
 <div class="table-container">
@@ -138,27 +119,19 @@
 
     @if (Model.menuItems != null && Model.menuItems.Any())
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Food Name</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody class="contents">
-                @foreach (var menuitem in Model.menuItems)
-                {
-                    <tr data-category="@menuitem.categoryname">
-                        <td>@menuitem.foodname</td>
-                        <td>@menuitem.fooddescription</td>
-                        <td>@menuitem.categoryname</td>
-                        <td>@menuitem.foodprice</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="menu-container">
+            @foreach (var menuitem in Model.menuItems)
+            {
+                <div class="menu-item" data-category="@menuitem.categoryname">
+                    <img src="@Url.Content(menuitem.foodpictureurl)" alt="@menuitem.foodname" />
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">@menuitem.foodname</div>
+                        <div class="menu-item-description">@menuitem.fooddescription</div>
+                        <div class="menu-item-price">₹@menuitem.foodprice</div>
+                    </div>
+                </div>
+            }
+        </div>
     }
     else
     {
@@ -173,16 +146,16 @@
     function filterMenu() {
         const selectedCategory = categoryDropdown.value.toLowerCase();
         const searchFilter = searchInput.value.toLowerCase();
-        const rows = document.querySelectorAll('.table tbody tr');
+        const menuItems = document.querySelectorAll('.menu-item');
 
-        rows.forEach(row => {
-            const category = row.getAttribute('data-category').toLowerCase();
-            const text = row.innerText.toLowerCase();
+        menuItems.forEach(item => {
+            const category = item.getAttribute('data-category').toLowerCase();
+            const text = item.innerText.toLowerCase();
 
             const categoryMatch = selectedCategory === 'all' || category === selectedCategory;
             const searchMatch = text.includes(searchFilter);
 
-            row.style.display = categoryMatch && searchMatch ? '' : 'none';
+            item.style.display = categoryMatch && searchMatch ? '' : 'none';
         });
     }
 

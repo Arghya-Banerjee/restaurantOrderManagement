@@ -11,38 +11,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- Page CSS -->
 <style>
     body {
         background-color: #121212;
         color: #ffffff;
-    }
-
-    .search-input {
-        margin-bottom: 20px;
-        padding: 10px;
-        background-color: #1f1f1f;
-        border: 1px solid #424242;
-        color: #ffffff;
-    }
-
-    .table th, .table td {
-        background-color: #1f1f1f;
-        color: #f8f9fa; /* Make menu list text whiter */
-        border-top: 1px solid #424242;
-    }
-
-    .table th {
-        background-color: #292929;
-        font-weight: bold;
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #242424;
-    }
-
-    .table-striped tbody tr:hover {
-        background-color: #383838;
     }
 
     .cart-btn {
@@ -53,36 +25,131 @@
         color: #ffffff;
         border-radius: 50px;
         padding: 10px 20px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .cart-btn:hover {
         background-color: #383838;
+        transform: scale(1.05);
     }
 
-    .modal-header .modal-title {
-        color: #ffffff !important;
-        font-weight: bold;
-        font-size: 1.25rem;
-    }
-
-    .modal-header {
-        background-color: #1f1f1f;
-        border-bottom: 1px solid #424242;
-    }
-
-    .modal-content {
-        background-color: #1f1f1f;
+    .search-input {
+        margin-bottom: 20px;
+        padding: 12px 15px;
+        background-color: #292929;
+        border: 1px solid #424242;
         color: #ffffff;
+        font-size: 1rem;
         border-radius: 8px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .modal-footer {
-        border-top: 1px solid #424242;
+    .search-input::placeholder {
+        color: #cfcfcf;
+        font-style: italic;
     }
 
-    .modal-body {
-        padding: 20px;
+    .search-input:focus {
+        outline: none;
+        border-color: #f4b400;
+        box-shadow: 0 0 8px rgba(244, 180, 0, 0.8);
+    }
+
+    .menu-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .menu-item {
+        background-color: #1f1f1f;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+        .menu-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 2px solid #f4b400;
+            border-radius: 8px 8px 0 0;
+        }
+
+    .menu-item-title {
+        font-size: 1.25rem;
+        color: #f4b400;
+        margin: 10px 0;
+    }
+
+    .menu-item-description {
+        font-size: 0.9rem;
+        color: #cfcfcf;
+        margin-bottom: 10px;
+        height: 40px; /* Fixed height for consistency */
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .quantity-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantity-input {
+        width: 60px;
+        text-align: center;
+        background-color: #1f1f1f;
+        border: 1px solid #424242;
+        color: #ffffff;
+        border-radius: 5px;
+        height: 36px; /* Match button height */
+        padding: 5px 0; /* Center-align text vertically */
+        box-sizing: border-box;
+    }
+
+    .quantity-btn {
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        height: 36px; /* Set button height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-decrease {
+        background-color: #d9534f;
+        color: #ffffff;
+    }
+
+    .btn-increase {
+        background-color: #5cb85c;
+        color: #ffffff;
+    }
+
+    .btn-add-to-cart {
+        background-color: #007bff;
+        color: #ffffff;
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: bold;
     }
 </style>
 
@@ -92,30 +159,25 @@
     <!-- Search Bar -->
     <input type="text" id="searchInput" class="search-input" placeholder="Search for items...">
 
-    <!-- Menu Table -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Item Name</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.foodname</td>
-                    <td>₹@Math.Round((float)item.foodprice, 2)</td>
-                    <td>
-                        <button class="btn btn-primary" onclick="showQuantityModal('@item.menuid', '@item.foodname', '@item.foodprice')">
-                            Add to Cart
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <!-- Menu Grid -->
+    <div class="menu-container">
+        @foreach (var item in Model)
+        {
+            <div class="menu-item" data-item-id="@item.menuid">
+                <img src="@Url.Content(item.foodpictureurl)" alt="@item.foodname" />
+                <div class="menu-item-title">@item.foodname</div>
+                <div class="menu-item-description">@item.fooddescription</div>
+                <div class="quantity-container">
+                    <button class="quantity-btn btn-decrease" onclick="decreaseQuantity('@item.menuid')">-</button>
+                    <input type="number" id="quantity-@item.menuid" class="quantity-input" value="0" min="0">
+                    <button class="quantity-btn btn-increase" onclick="increaseQuantity('@item.menuid')">+</button>
+                </div>
+                <button class="btn btn-add-to-cart" onclick="addToCart('@item.menuid', '@item.foodname', @item.foodprice)">
+                    Add to Cart
+                </button>
+            </div>
+        }
+    </div>
 </div>
 
 <!-- Cart Button -->
@@ -123,15 +185,26 @@
     &#128722; View Cart
 </button>
 
-<!-- Import Modals -->
-@await Html.PartialAsync("_QuantityModal")
-@await Html.PartialAsync("_ItemAddedModal")
-@await Html.PartialAsync("_TableNumberModal")
+<!-- Table Number Modal -->
+<div id="tableNumberModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enter Table Number</h5>
+            </div>
+            <div class="modal-body">
+                <input id="tableNumberInput" class="form-control" type="number" placeholder="Table Number" />
+            </div>
+            <div class="modal-footer">
+                <button id="submitTableNumberBtn" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- JavaScript -->
 <script>
     $(document).ready(function () {
-        var tableNumber = @tableNum
+        var tableNumber = @tableNum;
         if (tableNumber === 0) {
             $('#tableNumberModal').modal('show');
         }
@@ -139,64 +212,53 @@
 
     $('#submitTableNumberBtn').click(function () {
         const tableNumber = $('#tableNumberInput').val();
-        $.post('@Url.Action("GetTableNumber", "Cart")', {tableNumber: tableNumber});
+        $.post('@Url.Action("GetTableNumber", "Cart")', { tableNumber: tableNumber });
         $('#tableNumberModal').modal('hide');
     });
 
-    let selectedItem = null;
-
-    function showQuantityModal(itemId, itemName, price) {
-        selectedItem = { itemId, itemName, price };
-        document.getElementById("newQuantity").value = "";
-        $('#quantityModal').modal('show');
+    function decreaseQuantity(itemId) {
+        const quantityInput = document.getElementById(`quantity-${itemId}`);
+        let currentValue = parseInt(quantityInput.value) || 0;
+        if (currentValue > 0) {
+            quantityInput.value = currentValue - 1;
+        }
     }
 
-    $('#saveQuantityBtn').click(function () {
-        const quantity = $('#newQuantity').val();
-        if (quantity && quantity > 0) {
-            $.post('@Url.Action("AddToCart", "Cart")', {
-                itemId: selectedItem.itemId,
-                itemName: selectedItem.itemName,
-                price: selectedItem.price,
-                quantity: quantity
-            }, function (response) {
-                if (response.success) {
-                    $('#quantityModal').modal('hide');
-                    $('#itemAddedModal').modal('show');
-                } else {
-                    alert("Failed to add item.");
-                }
-            });
-        } else {
-            alert("Please enter a valid quantity.");
+    function increaseQuantity(itemId) {
+        const quantityInput = document.getElementById(`quantity-${itemId}`);
+        let currentValue = parseInt(quantityInput.value) || 0;
+        quantityInput.value = currentValue + 1;
+    }
+
+    function addToCart(itemId, itemName, price) {
+        const quantityInput = document.getElementById(`quantity-${itemId}`);
+        const quantity = parseInt(quantityInput.value) || 0;
+
+        if (quantity <= 0) {
+            alert("Please select a quantity greater than 0.");
+            return;
         }
-    });
 
-    $('#quantityModalCloseBtn').click(function () {
-        $('#quantityModal').modal('hide');
-    });
-
-    $('#quantityModalCrossBtn').click(function () {
-        $('#quantityModal').modal('hide');
-    });
-
-    $('#continueShoppingBtn').click(function () {
-        $('#itemAddedModal').modal('hide');
-    });
-
-    $('#viewCartBtn').click(function () {
-        window.location.href = '@Url.Action("ViewCart", "Cart")';
-    });
-
-    $('#itemAddModalCrossBtn').click(function () {
-        $('#itemAddModal').modal('hide');
-    });
+        $.post('@Url.Action("AddToCart", "Cart")', {
+            itemId: itemId,
+            itemName: itemName,
+            price: price,
+            quantity: quantity
+        }, function (response) {
+            if (response.success) {
+                alert(`${itemName} (x${quantity}) added to cart.`);
+                quantityInput.value = 0;
+            } else {
+                alert("Failed to add item to cart.");
+            }
+        });
+    }
 
     document.getElementById('searchInput').addEventListener('input', function () {
         const filter = this.value.toLowerCase();
-        document.querySelectorAll('.table tbody tr').forEach(row => {
-            const itemName = row.cells[0].innerText.toLowerCase();
-            row.style.display = itemName.includes(filter) ? '' : 'none';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            const itemName = item.querySelector('.menu-item-title').innerText.toLowerCase();
+            item.style.display = itemName.includes(filter) ? '' : 'none';
         });
     });
 </script>

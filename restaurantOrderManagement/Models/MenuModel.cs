@@ -12,5 +12,6 @@
         public int catid { get; set; }
         public string categoryname { get; set; }
         public string createdby { get; set; }
+        public string foodpictureurl { get; set; }
     }
 }
