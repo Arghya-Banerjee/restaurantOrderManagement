@@ -76,7 +76,7 @@ Ensure you have the following installed:
 
 ### 🔹 **Show Menu Page**
 
-![Show Menu Page](https://github.com/user-attachments/assets/b0883cf4-1c0e-4074-b481-3ffee4f7b974)
+![Show Menu Page](https://github.com/user-attachments/assets/b974e1d7-eb13-4c7b-a38e-1913b8e8e63d)
 
 ### 🔹 **Add Menu Page**
 
