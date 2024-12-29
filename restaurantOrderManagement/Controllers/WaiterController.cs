@@ -6,6 +6,7 @@ using restaurantOrderManagement.Models;  // Import your model or namespace for s
 using System.Globalization;
 using restaurantOrderManagement.Utility_Classes;
 using restaurantOrderManagement.ViewModels;
+using System.ComponentModel;
 
 namespace restaurantOrderManagement.Controllers
 {
@@ -75,6 +76,8 @@ namespace restaurantOrderManagement.Controllers
 
         public IActionResult CurrentOrders()
         {
+            System.Diagnostics.Debug.WriteLine("Showing Current Orders !!");
+
             string userId = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
 
             List<CurrentOrdersModel> currOrders = new List<CurrentOrdersModel>();
@@ -82,13 +85,13 @@ namespace restaurantOrderManagement.Controllers
             currOrderDummy.OpMode = 1;
             currOrders = DBOperations<CurrentOrdersModel>.GetAllOrByRange(currOrderDummy, Constant.usp_CurrentOrders);
 
+            System.Diagnostics.Debug.WriteLine("Return current orders view !!");
             return View(currOrders);
         }
 
         [HttpGet]
         public IActionResult ShowBill(int tableNumber)
         {
-
             List<BillItemsModel> billItemList = new List<BillItemsModel>();
             BillItemsModel billItemDummy = new BillItemsModel();
             billItemDummy.OpMode = 0;
@@ -110,6 +113,7 @@ namespace restaurantOrderManagement.Controllers
             orderHeaderDummy.CreatedOn = DateTime.Now;
             OrderHeaderModel orderDetails = DBOperations<OrderHeaderModel>.GetSpecific(orderHeaderDummy, Constant.usp_OrderHeader);
             long orderId = orderDetails.OrderID;
+            ViewBag.OrderID = orderId; // Adding orderID to ViewBag to pass to Rate Us
             DateTime orderTime = orderDetails.CreatedOn;
 
             InvoiceModel invoice = new InvoiceModel();
@@ -138,24 +142,9 @@ namespace restaurantOrderManagement.Controllers
             billDetails.AmountIncludingGST = amtIncludingGST;
             billDetails.OrderTime = orderTime;
 
+            ViewBag.tableNumber = tableNumber; 
+
             return View(billDetails);
-        }
-
-        public IActionResult MarkAsCompleted(int tableNumber)
-        {
-            string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
-
-            OrderHeaderModel changeStutusDummy = new OrderHeaderModel();
-            changeStutusDummy.TableNumber = tableNumber;
-            changeStutusDummy.Opmode = 2;
-            changeStutusDummy.OrderStatus = 1;
-            changeStutusDummy.OrderDate = DateTime.Now;
-            changeStutusDummy.CreatedOn = DateTime.Now;
-            DBOperations<OrderHeaderModel>.DMLOperation(changeStutusDummy, Constant.usp_OrderHeader);
-
-            System.IO.File.Delete(xmlFilePath);
-
-            return View();
         }
     }
 }

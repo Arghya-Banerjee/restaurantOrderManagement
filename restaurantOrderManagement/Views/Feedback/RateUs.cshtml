@@ -1,72 +1,104 @@
 ﻿@{
     ViewData["Title"] = "Rate Us";
+    long orderId = ViewBag.OrderID;
 }
 
-<h2>Rate Us</h2>
-
 <form id="rateUsForm">
-    <p>Please rate the following:</p>
-
     <div class="rating-container">
         <div class="rating-scale">
             <h4>Food Rating</h4>
-            @for (int i = 1; i <= 5; i++)
-            {
-                <input type="radio" id="foodRating@i" name="foodRating" value="@i">
-                <label for="foodRating@i">@i</label>
-            }
+            <div class="stars">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="star" data-value="@i" data-type="foodRating">&#9733;</span>
+                }
+            </div>
         </div>
 
         <div class="rating-scale">
             <h4>Waiter Rating</h4>
-            @for (int i = 1; i <= 5; i++)
-            {
-                <input type="radio" id="waiterRating@i" name="waiterRating" value="@i">
-                <label for="waiterRating@i">@i</label>
-            }
+            <div class="stars">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="star" data-value="@i" data-type="waiterRating">&#9733;</span>
+                }
+            </div>
         </div>
 
         <div class="rating-scale">
             <h4>Restaurant Overall Rating</h4>
-            @for (int i = 1; i <= 5; i++)
-            {
-                <input type="radio" id="restaurantRating@i" name="restaurantRating" value="@i">
-                <label for="restaurantRating@i">@i</label>
-            }
+            <div class="stars">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="star" data-value="@i" data-type="restaurantRating">&#9733;</span>
+                }
+            </div>
         </div>
     </div>
 
-    <button type="button" id="submitRating" class="btn btn-primary">Submit</button>
+    <div style="text-align: center;">
+        <button type="button" id="submitRating" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#submitRating").on("click", function () {
-            const foodRating = $("input[name='foodRating']:checked").val();
-            const waiterRating = $("input[name='waiterRating']:checked").val();
-            const restaurantRating = $("input[name='restaurantRating']:checked").val();
+        let ratings = {
+            foodRating: 0,
+            waiterRating: 0,
+            restaurantRating: 0
+        };
 
-            if (!foodRating || !waiterRating || !restaurantRating) {
+        $(".star").on("click", function () {
+            const value = $(this).data("value");
+            const type = $(this).data("type");
+
+            ratings[type] = value;
+
+            $(`.star[data-type='${type}']`).css("color", "#ccc"); // Reset all stars of the same type
+            $(this).css("color", getColor(value)); // Color only the clicked star
+        });
+
+        function getColor(value) {
+            switch (value) {
+                case 1: return "red";
+                case 2: return "orange";
+                case 3: return "yellow";
+                case 4: return "lightgreen";
+                case 5: return "darkgreen";
+                default: return "#ccc";
+            }
+        }
+
+        $("#submitRating").on("click", function () {
+            if (!ratings.foodRating || !ratings.waiterRating || !ratings.restaurantRating) {
                 alert("Please complete all ratings before submitting!");
                 return;
             }
 
-            $.ajax({
-                url: '/Rating/PostRating', // Adjust to your controller action URL
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    foodRating: foodRating,
-                    waiterRating: waiterRating,
-                    restaurantRating: restaurantRating
-                }),
-                success: function (response) {
-                    alert('Thank you for your feedback!');
-                },
-                error: function () {
-                    alert('Something went wrong. Please try again later.');
+            // Fetch orderId safely from Razor ViewBag
+            const orderId = "@(ViewBag.OrderId ?? 0)";
+            if (!orderId || orderId === "0") {
+                alert("Order ID is missing. Cannot submit the rating.");
+                return;
+            }
+
+            // Submit ratings via AJAX
+            $.post('/Feedback/SubmitRating', {
+                foodRating: ratings.foodRating,
+                waiterRating: ratings.waiterRating,
+                restaurantRating: ratings.restaurantRating,
+                orderId: orderId
+            }, function (response) {
+                if (response.success) {
+                    // Redirect to CurrentOrders action in WaiterController
+                    window.location.href = "@Url.Action("CurrentOrders", "Waiter")";
+                } else {
+                    alert(response.message);
                 }
+            }).fail(function () {
+                alert("An error occurred while submitting the rating.");
             });
         });
     });
@@ -75,36 +107,32 @@
 <style>
     .rating-container {
         display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
-        gap: 20px;
+        flex-direction: column;
+        gap: 30px;
         margin-top: 20px;
-    }
-
-    .rating-scale {
+        align-items: center;
         text-align: center;
     }
 
-        .rating-scale input[type="radio"] {
-            display: none;
-        }
+    .rating-scale {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .rating-scale label {
-            display: inline-block;
-            margin: 0 5px;
-            cursor: pointer;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
+    .stars {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
 
-        .rating-scale input[type="radio"]:checked + label {
-            background-color: #4CAF50;
-            color: white;
-            transform: scale(1.1);
-        }
+    .star {
+        font-size: 80px;
+        cursor: pointer;
+        color: #ccc;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
 
     .btn {
         margin-top: 20px;

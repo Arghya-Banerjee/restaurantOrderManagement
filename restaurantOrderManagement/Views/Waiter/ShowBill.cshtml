@@ -69,6 +69,14 @@
     <!-- Rate Us Section -->
     <div class="text-center mt-5">
         <h4 class="text-primary">We hope you enjoyed our service!</h4>
-        <button class="btn btn-info btn-lg mt-3" onclick="window.location.href='/Feedback/RateUs'">Rate Us</button>
+        <button class="btn btn-info btn-lg mt-3" onclick="rateUs(@ViewBag.OrderId)">Rate Us</button>
+
     </div>
 </div>
+
+<script>
+    function rateUs(orderId) {
+        // Redirect with orderId as a query parameter
+        window.location.href = `/Feedback/RateUs?orderId=${orderId}`;
+    }
+</script>
