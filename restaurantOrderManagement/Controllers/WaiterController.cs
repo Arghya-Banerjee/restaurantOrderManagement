@@ -76,7 +76,7 @@ namespace restaurantOrderManagement.Controllers
 
         public IActionResult CurrentOrders()
         {
-            System.Diagnostics.Debug.WriteLine("Showing Current Orders !!");
+            //System.Diagnostics.Debug.WriteLine("Showing Current Orders !!");
 
             string userId = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
 
@@ -85,7 +85,7 @@ namespace restaurantOrderManagement.Controllers
             currOrderDummy.OpMode = 1;
             currOrders = DBOperations<CurrentOrdersModel>.GetAllOrByRange(currOrderDummy, Constant.usp_CurrentOrders);
 
-            System.Diagnostics.Debug.WriteLine("Return current orders view !!");
+            //System.Diagnostics.Debug.WriteLine("Return current orders view !!");
             return View(currOrders);
         }
 
@@ -142,7 +142,7 @@ namespace restaurantOrderManagement.Controllers
             billDetails.AmountIncludingGST = amtIncludingGST;
             billDetails.OrderTime = orderTime;
 
-            ViewBag.tableNumber = tableNumber; 
+            ViewBag.tableNumber = tableNumber;
 
             return View(billDetails);
         }

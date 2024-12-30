@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using restaurantOrderManagement.Models;
 using restaurantOrderManagement.Utility_Classes;
-using System.Globalization;
 
 namespace restaurantOrderManagement.Controllers
 {
@@ -10,6 +9,7 @@ namespace restaurantOrderManagement.Controllers
     {
         public IActionResult Index()
         {
+            //InvoiceUtility.GenerateBillInvoice(); // Testing purpose
             return View();
         }
 
