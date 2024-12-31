@@ -2,14 +2,15 @@
 using System.IO;
 using System.Collections.Generic;
 using iText.Kernel.Pdf;
+using iText.Kernel.Colors;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using iText.Kernel.Colors;
 using iText.Layout.Borders;
+using iText.Barcodes;
+using iText.Kernel.Pdf.Canvas;
 using restaurantOrderManagement.Models;
 using restaurantOrderManagement.Utility_Classes;
-using iText.Kernel.Pdf.Canvas;
 
 public static class InvoiceUtility
 {
@@ -39,34 +40,42 @@ public static class InvoiceUtility
                       .SetLineWidth(1) // Thin border
                       .Stroke();
 
-                // Title
-                document.Add(new Paragraph("Restaurant Bill")
-                    .SetTextAlignment(TextAlignment.CENTER)
-                    .SetFontSize(18)
-                    .SetFontColor(ColorConstants.WHITE)
-                    .SetBackgroundColor(ColorConstants.BLUE)
-                    .SetMarginBottom(10));
+                // Title and Header
+                Table headerTable = new Table(new float[] { 1 }).UseAllAvailableWidth();
+                headerTable.SetMarginBottom(10);
 
-                // Restaurant Information
-                document.Add(CreateParagraph(GlobalVariables.RestaurantName)
-                    .SetTextAlignment(TextAlignment.LEFT)
-                    .SetFontSize(12)
-                    .SetBold());
-                document.Add(CreateParagraph($"GSTIN: {GlobalVariables.GSTNumber}"));
-                document.Add(CreateParagraph(GlobalVariables.Address));
-                document.Add(CreateParagraph($"Phone: {GlobalVariables.PhoneNumber}")
-                    .SetMarginBottom(10));
+                // Left side: Restaurant Name and GSTIN
+                Cell leftCell = new Cell()
+                    .Add(new Paragraph(GlobalVariables.RestaurantName).SetFontSize(14).SetBold())
+                    .Add(new Paragraph($"GSTIN: {GlobalVariables.GSTNumber}").SetFontSize(10))
+                    .Add(new Paragraph(GlobalVariables.Address).SetFontSize(10))
+                    .Add(new Paragraph($"Phone: {GlobalVariables.PhoneNumber}").SetFontSize(10));
+                leftCell.SetBorder(Border.NO_BORDER);
+                headerTable.AddCell(leftCell);
+
+                document.Add(headerTable);
+
+                // Add the Barcode in Top-Right using Absolute Positioning
+                Image barcodeImage = CreateBarcode(pdf, invoiceDetails.OrderID.ToString(), true);
+                barcodeImage.SetFixedPosition(pageWidth - 140, pageHeight - 65); // Adjust position
+                barcodeImage.ScaleAbsolute(100, 20); // Scale to desired size
+                document.Add(barcodeImage);
 
                 // Invoice Metadata
-                Table metadataTable = new Table(new float[] { 1, 1 }).UseAllAvailableWidth();
+                Table metadataTable = new Table(new float[] { 1, 3 }).UseAllAvailableWidth();
+
                 metadataTable.AddCell(CreateCell("Invoice No:", TextAlignment.LEFT, true));
-                metadataTable.AddCell(CreateCell(invoiceDetails.InvoiceID.ToString(), TextAlignment.RIGHT, false));
+                metadataTable.AddCell(CreateCell(FormatID(invoiceDetails.InvoiceID), TextAlignment.RIGHT, false));
+
                 metadataTable.AddCell(CreateCell("Invoice Date:", TextAlignment.LEFT, true));
                 metadataTable.AddCell(CreateCell(invoiceDetails.InvoiceDate.ToString("dd-MM-yyyy"), TextAlignment.RIGHT, false));
+
                 metadataTable.AddCell(CreateCell("Order ID:", TextAlignment.LEFT, true));
-                metadataTable.AddCell(CreateCell(invoiceDetails.OrderID.ToString(), TextAlignment.RIGHT, false));
+                metadataTable.AddCell(CreateCell(FormatID(invoiceDetails.OrderID), TextAlignment.RIGHT, false));
+
                 metadataTable.AddCell(CreateCell("Created By:", TextAlignment.LEFT, true));
                 metadataTable.AddCell(CreateCell(invoiceDetails.CreatedBy, TextAlignment.RIGHT, false));
+
                 document.Add(metadataTable);
 
                 // Itemized Section
@@ -122,6 +131,26 @@ public static class InvoiceUtility
         {
             Console.WriteLine($"Error generating invoice: {ex.Message}");
         }
+    }
+
+    private static Image CreateBarcode(PdfDocument pdf, string value, bool hideText = false)
+    {
+        Barcode128 barcode = new Barcode128(pdf);
+        barcode.SetCode(value);
+        barcode.SetBarHeight(40); // Set height
+        barcode.SetX(2.0f); // Adjust width scaling for longer barcode
+
+        if (hideText)
+        {
+            barcode.SetFont(null); // Removes the numerical text below the barcode
+        }
+
+        return new Image(barcode.CreateFormXObject(pdf));
+    }
+
+    private static string FormatID(long id)
+    {
+        return $"#{id:D6}"; // Add '#' and pad to 6 digits
     }
 
     private static Paragraph CreateParagraph(string content)
