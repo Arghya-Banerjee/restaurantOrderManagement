@@ -5,8 +5,10 @@ using restaurantOrderManagement.Utility_Classes;
 
 namespace restaurantOrderManagement.Controllers
 {
+    [Route("[controller]")]
     public class FeedbackController : Controller
     {
+        [Route("RateUs")]
         public IActionResult RateUs(int orderId)
         {
             ViewBag.OrderId = orderId; // Adding orderId to pass to Submit Rating
@@ -14,7 +16,7 @@ namespace restaurantOrderManagement.Controllers
         }
 
         [HttpPost]
-        [Route("Feedback/SubmitRating")]
+        [Route("SubmitRating")]
         public IActionResult SubmitRating(int foodRating, int waiterRating, int restaurantRating, int orderId)
         {
             try

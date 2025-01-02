@@ -1,12 +1,15 @@
 ﻿using Core;
 using Microsoft.AspNetCore.Mvc;
 using restaurantOrderManagement.Models;
+using restaurantOrderManagement.Utility_Classes;
 using restaurantOrderManagement.ViewModels;
 
 namespace restaurantOrderManagement.Controllers
 {
+    [Route("[controller]")]
     public class MenuController : Controller
     {
+        [Route("ShowMenu")]
         public IActionResult ShowMenu()
         {
 
@@ -30,32 +33,34 @@ namespace restaurantOrderManagement.Controllers
             return View(viewMenuCat);
         }
 
-        [HttpPost]
-        public ActionResult FilterMenu(string categoryName)
+        [Route("AddMenu")]
+        public IActionResult AddMenu()
         {
-            if(categoryName == "All")
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
+            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
             {
-                return View("Index");
+                return RedirectToAction("LoginPage", "Login");
             }
-            MenuModel model = new MenuModel();
-            List<MenuModel> list = new List<MenuModel>();
-            model.Opmode = 2;
-            model.categoryname = categoryName;
-            list = DBOperations<MenuModel>.GetAllOrByRange(model, Constant.usp_Menu);
 
-            CategoryModel cats = new CategoryModel();
-            List<CategoryModel> categories = new List<CategoryModel>();
-            cats.Opmode = 1;
-            categories = DBOperations<CategoryModel>.GetAllOrByRange(cats, Constant.usp_Menu);
+            ViewBag.userId = sessionDetails.UserID;
 
-            var viewMenuCat = new MenuViewModel
-            {
-                menuItems = list,
-                categoryItems = categories,
-                categoryName = categoryName
-            };
+            return View();
+        }
 
-            return View("Index", viewMenuCat);
+        [HttpPost]
+        [Route("AddMenu")]
+        public IActionResult AddMenu(MenuModel menu)
+        {
+            menu.Opmode = 3;
+            UserSec userSession = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+            string userid = userSession.UserID;
+            userid = StringUtility.toTitleCase(userid);
+            menu.createdby = userid;
+
+            int res = DBOperations<MenuModel>.DMLOperation(menu, Constant.usp_Menu);
+
+            return RedirectToAction("WelcomeWaiter", "Waiter");
         }
     }
 }

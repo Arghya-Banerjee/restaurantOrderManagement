@@ -7,13 +7,11 @@ using System.Globalization;
 
 namespace restaurantOrderManagement.Controllers
 {
+    [Route("[controller]")]
     public class ManagerController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        [Route("Welcome")]
+        [Route("WelcomeManager")]
         public IActionResult WelcomeManager()
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
@@ -31,6 +29,7 @@ namespace restaurantOrderManagement.Controllers
             return View();
         }
 
+        [Route("ShowProductDetails")]
         public IActionResult ShowProductDetails()
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");

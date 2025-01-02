@@ -86,7 +86,7 @@
 
 <div class="form-container">
     <h2>Add New Menu Item</h2>
-    @using (Html.BeginForm("WaiterAddMenu", "Waiter", FormMethod.Post))
+    @using (Html.BeginForm("AddMenu", "Menu", FormMethod.Post))
     {
         <label for="foodname">Food Name</label>
         @Html.TextBoxFor(x => x.foodname, new { placeholder = "Enter food name" })

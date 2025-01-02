@@ -5,14 +5,10 @@ using restaurantOrderManagement.Utility_Classes;
 
 namespace restaurantOrderManagement.Controllers
 {
+    [Route("[controller]")]
     public class LoginController : Controller
     {
-        public IActionResult Index()
-        {
-            //InvoiceUtility.GenerateBillInvoice(); // Testing purpose
-            return View();
-        }
-
+        [Route("~/")]
         public IActionResult LoginPage()
         {
             return View();
@@ -45,12 +41,9 @@ namespace restaurantOrderManagement.Controllers
                     {
                         objsession.vUserRole = UserRole.Waiter;
                         HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
-
-                        // Return JSON response with redirect URL
-                        //return Json(new { success = 1, message = "Login Successful", redirectUrl = Url.Action("WelcomeWaiter", "Waiter") });
                         
                         ViewBag.UserId = StringUtility.toTitleCase(objsession.UserID);
-                        return View("~/Views/waiter/WelcomeWaiter.cshtml");
+                        return RedirectToAction("Welcome", "Waiter");
                     }
                     if (objLogin.UserType == 4) // Manager user
                     {
@@ -58,7 +51,7 @@ namespace restaurantOrderManagement.Controllers
                         HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
 
                         ViewBag.UserId = StringUtility.toTitleCase(objsession?.UserID);
-                        return View("~/Views/Manager/WelcomeManager.cshtml");
+                        return RedirectToAction("Welcome", "Manager");
                     }
                 }
                 else

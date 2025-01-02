@@ -3,11 +3,13 @@ using System.Xml.Linq;
 using restaurantOrderManagement.Models;
 using Core;
 
+[Route("[controller]")]
 public class CartController : Controller
 {   
     //private readonly string xmlFilePath = "wwwroot/cart.xml";
 
     [HttpPost]
+    [Route("AddToCart")]
     public IActionResult AddToCart(int itemId, string itemName, decimal price, int quantity)
     {
         int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
@@ -34,6 +36,7 @@ public class CartController : Controller
     }
 
     [HttpGet]
+    [Route("ViewCart")]
     public IActionResult ViewCart()
     {
         int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
@@ -57,6 +60,7 @@ public class CartController : Controller
     }
 
     [HttpPost]
+    [Route("UpdateQuantity")]
     public IActionResult UpdateQuantity(int updateItemId, int newQuantity)
     {
         int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
@@ -82,12 +86,14 @@ public class CartController : Controller
     }
 
     [HttpPost]
+    [Route("GetTableNumber")]
     public IActionResult GetTableNumber(int tableNumber)
     {
         HttpContext.Session.SetObjectAsJson("TableNumber", tableNumber);
         return Json(new {success = true});
     }
 
+    [Route("PlaceOrder")]
     public IActionResult PlaceOrder()
     {
 

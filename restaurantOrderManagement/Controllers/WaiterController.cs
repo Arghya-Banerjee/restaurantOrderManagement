@@ -1,17 +1,17 @@
 ﻿using Core;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using restaurantOrderManagement.Models;  // Import your model or namespace for session handling
-
+using restaurantOrderManagement.Models;
 using System.Globalization;
 using restaurantOrderManagement.Utility_Classes;
 using restaurantOrderManagement.ViewModels;
-using System.ComponentModel;
 
 namespace restaurantOrderManagement.Controllers
 {
+    [Route("[controller]")]
     public class WaiterController : Controller
     {
+        [Route("Welcome")]
+        [Route("WelcomeWaiter")]
         public IActionResult WelcomeWaiter()
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
@@ -32,34 +32,8 @@ namespace restaurantOrderManagement.Controllers
             return View();
         }
 
-        public IActionResult WaiterAddMenuView()
-        {
-            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
-
-            if(sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
-            {
-                return RedirectToAction("LoginPage", "Login");
-            }
-
-            ViewBag.userId = sessionDetails.UserID;
-
-            return View();
-        }
-
-        public IActionResult WaiterAddMenu(MenuModel menu)
-        {
-            menu.Opmode = 3;
-            UserSec userSession = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
-            string userid = userSession.UserID;
-            userid = StringUtility.toTitleCase(userid);
-            menu.createdby = userid;
-
-            int res = DBOperations<MenuModel>.DMLOperation(menu, Constant.usp_Menu);
-
-            return RedirectToAction("WelcomeWaiter", "Waiter");
-        }
-
-        public IActionResult WaiterTakeOrder()
+        [Route("TakeOrder")]
+        public IActionResult TakeOrder()
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
             if(sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
@@ -74,6 +48,7 @@ namespace restaurantOrderManagement.Controllers
             return View(menuList);
         }
 
+        [Route("CurrentOrders")]
         public IActionResult CurrentOrders()
         {
             //System.Diagnostics.Debug.WriteLine("Showing Current Orders !!");
@@ -90,6 +65,7 @@ namespace restaurantOrderManagement.Controllers
         }
 
         [HttpGet]
+        [Route("ShowBill/tableNumber/{tableNumber}")]
         public IActionResult ShowBill(int tableNumber)
         {
             List<BillItemsModel> billItemList = new List<BillItemsModel>();
