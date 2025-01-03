@@ -1,6 +1,6 @@
 USE [resturentfood]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_OrderHistory]    Script Date: 1/3/2025 3:24:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_OrderHistory]    Script Date: 1/3/2025 4:09:38 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -48,7 +48,7 @@ BEGIN
                     FROM OrderInvoice
                     WHERE (CreatedOn >= @StartDate OR @StartDate IS NULL)
                       AND (CreatedOn <= @EndDate OR @EndDate IS NULL)
-                      AND (PaymentMode = @PaymentMode OR @PaymentMode = 0)
+                      --AND (PaymentMode = @PaymentMode OR @PaymentMode = 0)
                     GROUP BY CreatedBy, PaymentMode;
                 END
                 ELSE
@@ -57,14 +57,13 @@ BEGIN
                         SUM(AmountExcludingGST) AS AmountExcludingGST,
                         SUM(AmountIncludingGST) AS AmountIncludingGST,
                         SUM(GSTAmount) AS GSTAmount,
-                        PaymentMode,
-                        CreatedBy
+                        PaymentMode
                     FROM OrderInvoice
                     WHERE CreatedBy = @UserID
                       AND (CreatedOn >= @StartDate OR @StartDate IS NULL)
                       AND (CreatedOn <= @EndDate OR @EndDate IS NULL)
-                      AND (PaymentMode = @PaymentMode OR @PaymentMode = 0)
-                    GROUP BY PaymentMode, CreatedBy;
+                      --AND (PaymentMode = @PaymentMode OR @PaymentMode = 0)
+                    GROUP BY PaymentMode;
                 END
             END
             ELSE IF @ViewType = 1 -- Individual
@@ -76,11 +75,13 @@ BEGIN
                         AmountIncludingGST,
                         GSTAmount,
                         PaymentMode,
-                        CreatedBy
+                        CreatedBy,
+						CreatedOn
                     FROM OrderInvoice
                     WHERE (CreatedOn >= @StartDate OR @StartDate IS NULL)
                       AND (CreatedOn <= @EndDate OR @EndDate IS NULL)
-                      AND (PaymentMode = @PaymentMode OR @PaymentMode = 0);
+                      --AND (PaymentMode = @PaymentMode OR @PaymentMode = 0)
+					ORDER BY CreatedOn;
                 END
                 ELSE
                 BEGIN
@@ -89,12 +90,14 @@ BEGIN
                         AmountIncludingGST,
                         GSTAmount,
                         PaymentMode,
-                        CreatedBy
+                        CreatedBy,
+						CreatedOn
                     FROM OrderInvoice
                     WHERE CreatedBy = @UserID
                       AND (CreatedOn >= @StartDate OR @StartDate IS NULL)
                       AND (CreatedOn <= @EndDate OR @EndDate IS NULL)
-                      AND (PaymentMode = @PaymentMode OR @PaymentMode = 0);
+                      --AND (PaymentMode = @PaymentMode OR @PaymentMode = 0)
+					ORDER BY CreatedOn;
                 END
             END
         END

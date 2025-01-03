@@ -81,16 +81,40 @@ namespace restaurantOrderManagement.Controllers
         [HttpPost]
         public IActionResult OrderHistory(string StartDate, string EndDate, string WaiterName, string ViewType)
         {
-            DateTime? startDate = string.IsNullOrEmpty(StartDate) ? null : DateTime.Parse(StartDate);
-            DateTime? endDate = string.IsNullOrEmpty(EndDate) ? null : DateTime.Parse(EndDate);
+            DateTime startDate = DateTime.Parse(StartDate);
+            DateTime endDate = DateTime.Parse(EndDate);
 
-            string waiter = string.IsNullOrEmpty(WaiterName) ? "All" : WaiterName;
+            string waiter = WaiterName;
             string viewType = ViewType;
 
-            
-
-            return Ok();
+            if (ViewType == "Aggregate")
+            {
+                List<OrderHistoryModel> orderHistoryList = DBOperations<OrderHistoryModel>.GetAllOrByRange(new OrderHistoryModel
+                {
+                    OpMode = 0,
+                    ViewType = 0,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    UserID = waiter
+                }, Constant.usp_OrderHistory);
+                ViewBag.ViewTypeNum = 0;
+                ViewBag.WaiterName = waiter;
+                return View(orderHistoryList);
+            }
+            else
+            {
+                List<OrderHistoryModel> orderHistoryList = DBOperations<OrderHistoryModel>.GetAllOrByRange(new OrderHistoryModel
+                {
+                    OpMode = 0,
+                    ViewType = 1,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    UserID = waiter
+                }, Constant.usp_OrderHistory);
+                ViewBag.ViewTypeNum = 1;
+                ViewBag.WaiterName = waiter;
+                return View(orderHistoryList);
+            }
         }
-
     }
 }

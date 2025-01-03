@@ -11,7 +11,7 @@
     </div>
 
     <div class="container mt-4" style="background-color: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);">
-        <form asp-action="OrderHistory" method="post">
+        <form asp-controller="Manager" asp-action="OrderHistory" method="post">
             <div class="form-group mb-3">
                 <label for="startDate" class="mr-2">Start Date:</label>
                 <input type="date" class="form-control" id="startDate" name="StartDate" required>

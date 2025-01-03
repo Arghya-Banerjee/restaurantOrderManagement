@@ -1,6 +1,6 @@
 USE [resturentfood]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_Rating]    Script Date: 1/3/2025 3:24:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_Rating]    Script Date: 1/3/2025 4:09:38 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

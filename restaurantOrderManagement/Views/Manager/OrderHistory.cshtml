@@ -1,0 +1,119 @@
+﻿@model List<restaurantOrderManagement.Models.OrderHistoryModel>
+
+@{
+    ViewData["Title"] = "Order History";
+    int viewType = ViewBag.ViewTypeNum;
+    string waiterName = ViewBag.WaiterName;
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 text-danger">
+            Order History
+            @if (waiterName != "All")
+            {
+                <span>- @waiterName</span>
+            }
+        </h1>
+        @if (viewType == 0)
+        {
+            <p class="lead text-light">Displaying aggregated order history data.</p>
+        }
+        else if (viewType == 1)
+        {
+            <p class="lead text-light">Displaying individual order history data.</p>
+        }
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-dark table-striped mt-4">
+            <thead>
+                <tr>
+                    @if (viewType == 0) // Aggregate View
+                    {
+                        @if (waiterName == "All")
+                        {
+                            <th>Waiter</th>
+                        }
+                        <th>Amount Excluding GST</th>
+                        <th>GST Amount</th>
+                        <th>Amount Including GST</th>
+                    }
+                    else if (viewType == 1) // Individual View
+                    {
+                        @if (waiterName == "All")
+                        {
+                            <th>Waiter</th>
+                        }
+                        <th>Payment Mode</th>
+                        <th>Amount Excluding GST</th>
+                        <th>GST Amount</th>
+                        <th>Amount Including GST</th>
+                        <th>Created On</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        @if (viewType == 0) // Aggregate View
+                        {
+                            @if (waiterName == "All")
+                            {
+                                <td>@order.CreatedBy</td>
+                            }
+                            <td>@order.AmountExcludingGST.ToString("C")</td>
+                            <td>@order.GSTAmount.ToString("C")</td>
+                            <td>@order.AmountIncludingGST.ToString("C")</td>
+                        }
+                        else if (viewType == 1) // Individual View
+                        {
+                            @if (waiterName == "All")
+                            {
+                                <td>@order.CreatedBy</td>
+                            }
+                            <td>@order.PaymentMode</td>
+                            <td>@order.AmountExcludingGST.ToString("C")</td>
+                            <td>@order.GSTAmount.ToString("C")</td>
+                            <td>@order.AmountIncludingGST.ToString("C")</td>
+                            <td>@order.CreatedOn?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger text-center mt-4" role="alert">
+            No order history data available for the selected filters.
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Dark mode background */
+        color: #ffffff; /* White text for readability */
+    }
+
+    h1 {
+        color: #d9534f;
+    }
+
+    .table th {
+        color: #d9534f;
+        text-align: center;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+    .alert {
+        background-color: #d9534f;
+        color: #ffffff;
+    }
+</style>
