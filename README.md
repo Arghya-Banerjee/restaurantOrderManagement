@@ -1,30 +1,34 @@
+
 # 🍴 Restaurant Management System
 
 A comprehensive and scalable solution for managing restaurant operations seamlessly.
 
 ---
 
-## 📌 **Overview**
+## 📌 Overview
 
-The **Restaurant Management System** is a robust, feature-packed web application built using modern technologies to simplify the day-to-day operations of restaurants. Designed for slightly tech-savvy restaurant owners, it integrates **order management**, **transaction tracking**, and **daily operations** into one cohesive platform, with planned extensions for **stock management** and **analytics dashboards**.
+The **Restaurant Management System** is a robust, feature-packed web application built using modern technologies to simplify the day-to-day operations of restaurants. Designed for slightly tech-savvy restaurant owners, it integrates **order management**, **transaction tracking**, **daily operations**, and **role-based access control** into one cohesive platform, with planned extensions for **stock management**, **analytics dashboards**, and **customer insights**.
 
 ---
 
-## 🎯 **Key Features**
+## 🎯 Key Features
 
-- 📋 **Order Management**: Take and manage orders efficiently with a simple UI.
+- 📋 **Order Management**: Take and manage orders efficiently with an intuitive user interface.
 - 💵 **Transaction History**: Keep track of all financial transactions for better accountability.
 - 📆 **Daily Operations Management**: Automate repetitive tasks and optimize workflows.
-- 🛒 **Planned Feature**: Stock management to monitor inventory levels in real-time.
+- 🛒 **Stock Management (Planned)**: Monitor inventory levels in real-time with low-stock alerts.
+- 🔒 **Role-Based Access Control**: Secure system with differentiated permissions for Admins and Members.
 - 🛠 **Microservice Updates**: Enhanced communication between services via RESTful APIs.
-- 🔒 **Secure Design**: Employs best practices for data security, user authentication, and role-based access control.
-- 🎨 **Updated Feature**: Improved "MarkAsCompleted" action, now rebranded to **ShowBill** for better clarity and enhanced functionality.
+- 🎨 **Updated Features**:
+  - Rebranded **MarkAsCompleted** action to **ShowBill** for improved clarity and enhanced functionality.
+  - Integrated **role-based dashboard views** for Admins and Members.
+- 📈 **Analytics Dashboard (Planned)**: Gain insights into sales, revenue trends, and customer behavior.
 
 ---
 
-## 🛠 **Tech Stack**
+## 🛠 Tech Stack
 
-- **Frontend**: Razor Pages with a touch of **JQuery** and **Ajax**.
+- **Frontend**: Razor Pages with **HTML**, **CSS**, **JQuery**, and **Ajax**.
 - **Backend**:
   - **Framework**: ASP.NET Core 8 MVC
   - **Architecture**: Microservices
@@ -33,9 +37,9 @@ The **Restaurant Management System** is a robust, feature-packed web application
 
 ---
 
-## 🚀 **Getting Started**
+## 🚀 Getting Started
 
-### **Prerequisites**
+### Prerequisites
 
 Ensure you have the following installed:
 
@@ -43,7 +47,7 @@ Ensure you have the following installed:
 - **MS SQL Server**
 - **Visual Studio 2022**
 
-### **Installation**
+### Installation
 
 1. Clone the repository:
    ```bash
@@ -68,43 +72,43 @@ Ensure you have the following installed:
 
 ---
 
-## 🖼 **Screenshots**
+## 🖼 Screenshots
 
-### 🔹 **Login Page**
+### 🔹 Login Page
 
 ![Login Page](https://github.com/user-attachments/assets/9f6ad3a0-5813-4066-ad4f-185e73567e6e)
 
-### 🔹 **Show Menu Page**
+### 🔹 Take Order Page
 
-![Show Menu Page](https://github.com/user-attachments/assets/b974e1d7-eb13-4c7b-a38e-1913b8e8e63d)
+![Take Order](https://github.com/user-attachments/assets/db2582e9-e634-4a57-94e1-6490c30a9af9)
 
-### 🔹 **Add Menu Page**
+### 🔹 ShowBill Page
 
-![Add Menu Page](https://github.com/user-attachments/assets/34720807-7181-4475-bdd5-67c4eab58bb8)
+![ShowBill Page](https://github.com/user-attachments/assets/c7fb3fae-12ed-4b2b-b8bb-847a2c94ea44)
 
 ---
 
-## 🏗 **Planned Features and Future Scope**
+## 🏗 Planned Features and Future Scope
 
-### **Planned Features**
+### Planned Features
 
 - 📦 **Stock Management**: Real-time inventory monitoring with low-stock alerts.
-- 🔄 **Analytics Dashboard**: Gain insights into sales, revenue trends, and customer behavior.
-- 🔄 **Multi-language Support**: Cater to users worldwide with multilingual capabilities.
+- 📊 **Analytics Dashboard**: Insights into sales, revenue trends, and customer behavior.
+- 🌍 **Multi-language Support**: Cater to users worldwide with multilingual capabilities.
 - ⏲ **Reservation System**: Integrate table booking functionalities with real-time availability.
 - 🚨 **Advanced Alerts**: Notifications for pending orders, delayed services, or system errors.
 
-### **Future Scope**
+### Future Scope
 
-- **AI-Powered Recommendations**: Suggest optimized menus based on sales trends and customer preferences.
-- **Integration with Payment Gateways**: Enable seamless payment options through popular platforms like PayPal, Stripe, and UPI.
-- **Cloud-Based Deployment**: Ensure high availability and global accessibility by deploying the system on Azure or AWS.
-- **Mobile App Development**: Complement the web application with native mobile apps for Android and iOS.
-- **Customer Feedback Module**: Gather and analyze customer feedback for service improvement.
+- 🤖 **AI-Powered Recommendations**: Suggest optimized menus based on sales trends and customer preferences.
+- 💳 **Payment Gateway Integration**: Enable seamless payment options through popular platforms like PayPal, Stripe, and UPI.
+- ☁️ **Cloud-Based Deployment**: Ensure high availability and global accessibility by deploying the system on Azure or AWS.
+- 📱 **Mobile App Development**: Complement the web application with native mobile apps for Android and iOS.
+- 💬 **Customer Feedback Module**: Gather and analyze customer feedback for service improvement.
 
 ---
 
-## 🤝 **Contributing**
+## 🤝 Contributing
 
 Contributions are welcome! Here's how you can help:
 
@@ -125,13 +129,13 @@ Contributions are welcome! Here's how you can help:
 
 ---
 
-## 📄 **License**
+## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 💬 **Contact**
+## 💬 Contact
 
 For queries or suggestions, feel free to reach out:  
 📧 **Email**: [arghya.banerjee.dev@gmail.com](mailto:arghya.banerjee.dev@gmail.com)  
