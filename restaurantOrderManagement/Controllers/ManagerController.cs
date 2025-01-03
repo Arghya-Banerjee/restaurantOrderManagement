@@ -57,5 +57,40 @@ namespace restaurantOrderManagement.Controllers
 
             return View(productDetails);
         }
+
+        [Route("ShowOrderHistory")]
+        public IActionResult ShowOrderHistory()
+        {
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
+            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.Manager)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+
+            List<UserModel> userlist = DBOperations<UserModel>.GetAllOrByRange(new UserModel
+            {
+                OpMode = 0,
+                UserType = 1 // Waiter
+            }, Constant.usp_User);
+
+            return View(userlist);
+        }
+
+        [Route("OrderHistory")]
+        [HttpPost]
+        public IActionResult OrderHistory(string StartDate, string EndDate, string WaiterName, string ViewType)
+        {
+            DateTime? startDate = string.IsNullOrEmpty(StartDate) ? null : DateTime.Parse(StartDate);
+            DateTime? endDate = string.IsNullOrEmpty(EndDate) ? null : DateTime.Parse(EndDate);
+
+            string waiter = string.IsNullOrEmpty(WaiterName) ? "All" : WaiterName;
+            string viewType = ViewType;
+
+            
+
+            return Ok();
+        }
+
     }
 }

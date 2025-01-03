@@ -1,0 +1,85 @@
+﻿@model List<restaurantOrderManagement.Models.UserModel>
+
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 text-danger">Order History</h1>
+        <p class="lead text-light">Use this page to view the order history for the restaurant.</p>
+    </div>
+
+    <div class="container mt-4" style="background-color: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);">
+        <form asp-action="OrderHistory" method="post">
+            <div class="form-group mb-3">
+                <label for="startDate" class="mr-2">Start Date:</label>
+                <input type="date" class="form-control" id="startDate" name="StartDate" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="endDate" class="mr-2">End Date:</label>
+                <input type="date" class="form-control" id="endDate" name="EndDate" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="waiterName" class="mr-2">Waiter:</label>
+                <select class="form-control" id="waiterName" name="WaiterName">
+                    <option value="All">All</option>
+                    @foreach (var waiter in Model)
+                    {
+                        <option value="@waiter.UserID">@waiter.UserID</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="mr-2">View Type:</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="ViewType" id="aggregate" value="Aggregate" required>
+                    <label class="form-check-label" for="aggregate">Aggregate</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="ViewType" id="individual" value="Individual">
+                    <label class="form-check-label" for="individual">Individual</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Submit</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212; /* Dark mode background */
+        color: #ffffff; /* White text for readability */
+    }
+
+    h1 {
+        color: #d9534f;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn-danger {
+        background-color: #d9534f; /* Red theme for the button */
+        border-color: #d43f3a;
+    }
+
+    .btn-danger:hover {
+        background-color: #c9302c; /* Darker red on hover */
+        border-color: #ac2925;
+    }
+
+    .form-check-label {
+        color: #ffffff; /* White text for radio buttons */
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+</style>
