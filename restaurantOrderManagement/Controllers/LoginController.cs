@@ -9,9 +9,30 @@ namespace restaurantOrderManagement.Controllers
     public class LoginController : Controller
     {
         [Route("~/")]
+        [Route("Home")]
         public IActionResult LoginPage()
         {
-            return View();
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
+            if (sessionDetails == null)
+            {
+                return View();
+            }
+
+            // If user is already Logged in Redirect to desired Dashboard
+            switch (sessionDetails.UserType)
+            {
+                case 1: // Waiter user
+                    ViewBag.UserId = StringUtility.toTitleCase(sessionDetails.UserID);
+                    return RedirectToAction("Welcome", "Waiter");
+
+                case 4: // Manager user
+                    ViewBag.UserId = StringUtility.toTitleCase(sessionDetails.UserID);
+                    return RedirectToAction("Welcome", "Manager");
+
+                default:
+                    return View();
+            }
         }
 
         [HttpPost]
@@ -67,6 +88,13 @@ namespace restaurantOrderManagement.Controllers
                 Utility.SaveSystemErrorLog(ex, ERRUSERID);
                 return Json(new { success = 0, message = ex.Message });
             }
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("LoginPage", "Login");
         }
     }
 }

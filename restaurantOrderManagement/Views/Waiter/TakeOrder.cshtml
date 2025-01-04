@@ -8,162 +8,12 @@
 
 <!-- Include Bootstrap and jQuery -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/css/Waiter/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #121212; /* Dark background */
-        color: #e0e0e0; /* Light text for contrast */
-        margin: 0;
-        padding: 0;
-    }
-
-    .cart-btn {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background-color: #f4b400; /* Gold background */
-        color: #ffffff; /* White text for better contrast */
-        border-radius: 50px;
-        padding: 10px 20px;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-        .cart-btn:hover {
-            background-color: #d89b00; /* Slightly darker gold */
-            transform: scale(1.05);
-        }
-
-    .search-input {
-        margin-bottom: 20px;
-        padding: 12px 15px;
-        background-color: #1e1e1e; /* Slightly lighter dark */
-        border: 1px solid #f4b400; /* Gold border */
-        color: #e0e0e0;
-        font-size: 1rem;
-        border-radius: 8px;
-        width: 100%;
-        max-width: 400px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .search-input::placeholder {
-            color: #cfcfcf;
-            font-style: italic;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #f4b400;
-            box-shadow: 0 0 8px rgba(244, 180, 0, 0.8);
-        }
-
-    .menu-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .menu-item {
-        background-color: #1e1e1e; /* Slightly lighter dark */
-        border-radius: 8px;
-        padding: 10px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: transform 0.2s ease;
-    }
-
-        .menu-item:hover {
-            transform: scale(1.05);
-        }
-
-        .menu-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-bottom: 2px solid #f4b400; /* Gold accent */
-            border-radius: 8px 8px 0 0;
-        }
-
-    .menu-item-title {
-        font-size: 1.25rem;
-        color: #f4b400; /* Gold */
-        margin: 10px 0;
-    }
-
-    .menu-item-description {
-        font-size: 0.9rem;
-        color: #cfcfcf; /* Soft gray */
-        margin-bottom: 10px;
-        height: 40px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .quantity-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .quantity-input {
-        width: 60px;
-        text-align: center;
-        background-color: #1e1e1e; /* Slightly lighter dark */
-        border: 1px solid #f4b400; /* Gold border */
-        color: #e0e0e0;
-        border-radius: 5px;
-        height: 36px;
-        padding: 5px 0;
-        box-sizing: border-box;
-    }
-
-    .quantity-btn {
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-decrease {
-        background-color: #d9534f; /* Red for decrease */
-        color: #ffffff;
-    }
-
-    .btn-increase {
-        background-color: #5cb85c; /* Green for increase */
-        color: #ffffff;
-    }
-
-    .btn-add-to-cart {
-        background-color: #f4b400; /* Gold */
-        color: #121212; /* Dark text for contrast */
-        width: 100%;
-        margin-top: 10px;
-        padding: 8px 15px;
-        border-radius: 5px;
-        font-size: 1rem;
-        font-weight: bold;
-    }
-
-        .btn-add-to-cart:hover {
-            background-color: #d89b00; /* Slightly darker gold */
-        }
+    
 </style>
 
 <div class="container">
@@ -189,9 +39,11 @@
                     Add to Cart
                 </button>
             </div>
+            
         }
     </div>
 </div>
+<div id="toastBox"></div>
 
 <!-- Cart Button -->
 <button class="btn cart-btn" onclick="window.location.href='@Url.Action("ViewCart", "Cart")'">
@@ -243,6 +95,25 @@
         quantityInput.value = currentValue + 1;
     }
 
+    function showToast(itemName, quantity) {
+        const toast = document.createElement('div');
+        toast.classList.add('toast');
+        toast.innerText = `${itemName} (x${quantity}) added to cart!`;
+
+        // Append toast to the toastBox div
+        const toastBox = document.getElementById('toastBox');
+        toastBox.appendChild(toast);
+
+        // Add fade-out effect after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0'; // Fade out
+            setTimeout(() => {
+                toast.remove(); // Remove from DOM after fade-out
+            }, 500); // Wait for fade-out transition
+        }, 1000); // Display for 3 seconds
+    }
+
+
     function addToCart(itemId, itemName, price) {
         const quantityInput = document.getElementById(`quantity-${itemId}`);
         const quantity = parseInt(quantityInput.value) || 0;
@@ -259,13 +130,15 @@
             quantity: quantity
         }, function (response) {
             if (response.success) {
-                alert(`${itemName} (x${quantity}) added to cart.`);
+                // Call showToast function here
+                showToast(itemName, quantity);
                 quantityInput.value = 0;
             } else {
                 alert("Failed to add item to cart.");
             }
         });
     }
+
 
     document.getElementById('searchInput').addEventListener('input', function () {
         const filter = this.value.toLowerCase();

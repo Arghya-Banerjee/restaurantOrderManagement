@@ -36,6 +36,7 @@ namespace restaurantOrderManagement.Controllers
         public IActionResult TakeOrder()
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
             if(sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
             {
                 return RedirectToAction("LoginPage", "Login");
@@ -51,7 +52,12 @@ namespace restaurantOrderManagement.Controllers
         [Route("CurrentOrders")]
         public IActionResult CurrentOrders()
         {
-            //System.Diagnostics.Debug.WriteLine("Showing Current Orders !!");
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
+            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
 
             string userId = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
 
@@ -68,6 +74,13 @@ namespace restaurantOrderManagement.Controllers
         [Route("ShowBill/tableNumber/{tableNumber}")]
         public IActionResult ShowBill(int tableNumber)
         {
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
+            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.Waiter)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+
             List<BillItemsModel> billItemList = new List<BillItemsModel>();
             BillItemsModel billItemDummy = new BillItemsModel();
             billItemDummy.OpMode = 0;

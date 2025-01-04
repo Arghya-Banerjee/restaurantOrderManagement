@@ -6,33 +6,48 @@ using Core;
 [Route("[controller]")]
 public class CartController : Controller
 {   
-    //private readonly string xmlFilePath = "wwwroot/cart.xml";
-
     [HttpPost]
     [Route("AddToCart")]
     public IActionResult AddToCart(int itemId, string itemName, decimal price, int quantity)
     {
-        int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
-        string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
-        if (!System.IO.File.Exists(xmlFilePath))
+        try
         {
-            var newCart = new XElement("cart");
-            newCart.Save(xmlFilePath);
+            int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
+            string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";
+
+            if (!System.IO.File.Exists(xmlFilePath))
+            {
+                var newCart = new XElement("cart");
+                newCart.Save(xmlFilePath);
+            }
+
+            var cart = XElement.Load(xmlFilePath);
+            var existingItem = cart.Elements("Item").FirstOrDefault(item => (int)item.Element("ItemId") == itemId);
+
+            if (existingItem != null)
+            {
+                int existingQuantity = (int)existingItem.Element("Quantity");
+                existingItem.Element("Quantity").Value = (existingQuantity + quantity).ToString();
+            }
+            else
+            {
+                var newItem = new XElement("Item",
+                    new XElement("ItemId", itemId),
+                    new XElement("ItemName", itemName),
+                    new XElement("Quantity", quantity),
+                    new XElement("Price", price)
+                );
+
+                cart.Add(newItem);
+            }
+
+            cart.Save(xmlFilePath);
+            return Json(new { success = true });
         }
-
-        var cart = XElement.Load(xmlFilePath);
-
-        var newItem = new XElement("Item",
-            new XElement("ItemId", itemId),
-            new XElement("ItemName", itemName),
-            new XElement("Quantity", quantity),
-            new XElement("Price", price)
-        );
-
-        cart.Add(newItem);
-        cart.Save(xmlFilePath);
-
-        return Json(new { success = true });
+        catch (Exception ex)
+        {
+            return Json(new { success = false, error = ex.Message });
+        }
     }
 
     [HttpGet]
@@ -96,8 +111,6 @@ public class CartController : Controller
     [Route("PlaceOrder")]
     public IActionResult PlaceOrder()
     {
-
-        ViewBag.OrderId = 121243;
         int tableNumber = HttpContext.Session.GetObjectFromJson<int>("TableNumber");
         string UserID = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails").UserID;
         string xmlFilePath = $"wwwroot/cart_{tableNumber}.xml";

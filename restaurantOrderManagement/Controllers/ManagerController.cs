@@ -78,9 +78,16 @@ namespace restaurantOrderManagement.Controllers
         }
 
         [Route("OrderHistory")]
-        [HttpPost]
-        public IActionResult OrderHistory(string StartDate, string EndDate, string WaiterName, string ViewType)
+        //[HttpGet]
+        public IActionResult OrderHistory(string StartDate, string EndDate, string WaiterName = "All", string ViewType = "Aggregate")
         {
+            var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
+
+            if (sessionDetails == null || sessionDetails.vUserRole != UserRole.Manager)
+            {
+                return RedirectToAction("LoginPage", "Login");
+            }
+
             DateTime startDate = DateTime.Parse(StartDate);
             DateTime endDate = DateTime.Parse(EndDate);
 

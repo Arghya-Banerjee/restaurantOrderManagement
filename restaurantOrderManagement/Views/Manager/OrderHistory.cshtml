@@ -42,6 +42,7 @@
                     }
                     else if (viewType == 1) // Individual View
                     {
+                        <th>Order ID</th>
                         @if (waiterName == "All")
                         {
                             <th>Waiter</th>
@@ -70,6 +71,7 @@
                         }
                         else if (viewType == 1) // Individual View
                         {
+                            <td>@order.OrderID</td>
                             @if (waiterName == "All")
                             {
                                 <td>@order.CreatedBy</td>

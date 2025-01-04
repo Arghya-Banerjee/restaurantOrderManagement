@@ -10,45 +10,89 @@
         <p class="lead text-light">Use this page to view the order history for the restaurant.</p>
     </div>
 
-    <div class="container mt-4" style="background-color: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);">
-        <form asp-controller="Manager" asp-action="OrderHistory" method="post">
-            <div class="form-group mb-3">
-                <label for="startDate" class="mr-2">Start Date:</label>
-                <input type="date" class="form-control" id="startDate" name="StartDate" required>
-            </div>
+    <div class="container mt-4 d-flex" style="background-color: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);">
+        <!-- Buttons Box -->
+        <div class="d-flex flex-column align-items-center" style="background-color: #2e2e2e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); width: 40%; margin-right: 20px;">
+            <h3 class="text-center text-light mb-3">Quick Actions</h3>
+            <button type="button" class="btn btn-danger btn-lg mb-2" style="width: 100%;" onclick="fetchReport('today')">Today's Report</button>
+            <button type="button" class="btn btn-danger btn-lg mb-2" style="width: 100%;" onclick="fetchReport('yesterday')">Yesterday's Report</button>
+            <button type="button" class="btn btn-danger btn-lg mb-2" style="width: 100%;" onclick="fetchReport('lastWeek')">Last Week's Report</button>
+            <button type="button" class="btn btn-danger btn-lg" style="width: 100%;" onclick="fetchReport('lastMonth')">Last Month's Report</button>
+        </div>
 
-            <div class="form-group mb-3">
-                <label for="endDate" class="mr-2">End Date:</label>
-                <input type="date" class="form-control" id="endDate" name="EndDate" required>
-            </div>
-
-            <div class="form-group mb-3">
-                <label for="waiterName" class="mr-2">Waiter:</label>
-                <select class="form-control" id="waiterName" name="WaiterName">
-                    <option value="All">All</option>
-                    @foreach (var waiter in Model)
-                    {
-                        <option value="@waiter.UserID">@waiter.UserID</option>
-                    }
-                </select>
-            </div>
-
-            <div class="form-group mb-3">
-                <label class="mr-2">View Type:</label>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ViewType" id="aggregate" value="Aggregate" required>
-                    <label class="form-check-label" for="aggregate">Aggregate</label>
+        <!-- Right Side Form -->
+        <div style="width: 60%;">
+            <form asp-controller="Manager" asp-action="OrderHistory" method="post">
+                <div class="form-group mb-3">
+                    <label for="startDate" class="mr-2">Start Date:</label>
+                    <input type="date" class="form-control" id="startDate" name="StartDate" required>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ViewType" id="individual" value="Individual">
-                    <label class="form-check-label" for="individual">Individual</label>
-                </div>
-            </div>
 
-            <button type="submit" class="btn btn-danger">Submit</button>
-        </form>
+                <div class="form-group mb-3">
+                    <label for="endDate" class="mr-2">End Date:</label>
+                    <input type="date" class="form-control" id="endDate" name="EndDate" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="waiterName" class="mr-2">Waiter:</label>
+                    <select class="form-control" id="waiterName" name="WaiterName">
+                        <option value="All">All</option>
+                        @foreach (var waiter in Model)
+                        {
+                            <option value="@waiter.UserID">@waiter.UserID</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="mr-2">View Type:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ViewType" id="aggregate" value="Aggregate" required>
+                        <label class="form-check-label" for="aggregate">Aggregate</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="ViewType" id="individual" value="Individual">
+                        <label class="form-check-label" for="individual">Individual</label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script>
+    function fetchReport(reportType) {
+        let startDate, endDate;
+        const today = new Date();
+
+        if (reportType === 'today') {
+            startDate = endDate = today.toISOString().split('T')[0];
+        } else if (reportType === 'yesterday') {
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            startDate = endDate = yesterday.toISOString().split('T')[0];
+        } else if (reportType === 'lastWeek') {
+            const lastWeek = new Date(today);
+            lastWeek.setDate(today.getDate() - 7);
+            startDate = lastWeek.toISOString().split('T')[0];
+            endDate = today.toISOString().split('T')[0];
+        } else if (reportType === 'lastMonth') {
+            const lastMonth = new Date(today);
+            lastMonth.setMonth(today.getMonth() - 1);
+            startDate = lastMonth.toISOString().split('T')[0];
+            endDate = today.toISOString().split('T')[0];
+        }
+
+        const url = `/Manager/OrderHistory?StartDate=${startDate}&EndDate=${endDate}&WaiterName=All&ViewType=Aggregate`;
+
+        window.location.href = url;
+    }
+</script>
+
 
 <style>
     body {
@@ -69,10 +113,10 @@
         border-color: #d43f3a;
     }
 
-    .btn-danger:hover {
-        background-color: #c9302c; /* Darker red on hover */
-        border-color: #ac2925;
-    }
+        .btn-danger:hover {
+            background-color: #c9302c; /* Darker red on hover */
+            border-color: #ac2925;
+        }
 
     .form-check-label {
         color: #ffffff; /* White text for radio buttons */
@@ -81,5 +125,22 @@
     .container {
         max-width: 800px;
         margin: 0 auto;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .flex-column {
+        flex-direction: column;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .btn-lg {
+        font-size: 1.25rem;
+        padding: 10px;
     }
 </style>

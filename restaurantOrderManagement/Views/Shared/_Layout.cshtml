@@ -18,18 +18,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <!-- Left-side navigation links -->
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Login" asp-action="LoginPage">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Login" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <!-- Right-side Logout button -->
+                    @if (ViewData["Title"]?.ToString() != "Login Page") // Check if not Login Page
+                    {
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="btn btn-danger text-light" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>
-
     </header>
     <div class="container">
         <main role="main" class="pb-3">
