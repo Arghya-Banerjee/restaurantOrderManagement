@@ -1,0 +1,109 @@
+﻿body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #1d1f2a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-page {
+    height: 70%; /* Adjusted height */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    width: 80%; /* Wider layout */
+    margin: 0 auto;
+    padding: 2rem; /* Internal spacing */
+    box-sizing: border-box; /* Include padding in dimensions */
+}
+
+.left-panel {
+    background-color: #101223;
+    padding: 2rem; /* Comfortable padding */
+    flex: 1.5; /* Wider left panel */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px 0 0 15px; /* Rounded corners on the left side */
+}
+
+.right-panel {
+    background-color: #2a2e42;
+    padding: 2rem; /* Symmetric padding */
+    flex: 1; /* Normal width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 15px 15px 0; /* Rounded corners on the right side */
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+h1, h3 {
+    font-weight: bold;
+    margin-bottom: 1.5rem; /* Space below headers */
+}
+
+.form-group {
+    margin-bottom: 1.5rem; /* Space between form fields */
+}
+
+.form-control {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444;
+    border-radius: 10px; /* Rounder input fields */
+    padding: 0.75rem; /* Comfortable padding */
+    font-size: 1rem;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4680ff;
+        box-shadow: 0 0 5px rgba(70, 128, 255, 0.5);
+    }
+
+.btn {
+    background-color: #4680ff;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1rem; /* Slightly larger text */
+    padding: 1rem 2rem; /* Spacious button */
+    border-radius: 25px; /* Rounded buttons */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+    .btn:hover {
+        background-color: #366bcc;
+    }
+
+.text-primary {
+    color: #4680ff !important;
+    text-decoration: none;
+}
+
+    .text-primary:hover {
+        color: #366bcc;
+        text-decoration: underline;
+    }
+
+.info {
+    max-width: 400px;
+    text-align: center;
+    padding: 2rem; /* Added padding for better readability */
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.8; /* Improved readability */
+}

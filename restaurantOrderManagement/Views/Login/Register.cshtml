@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Register Page";
+}
+
+<link rel="stylesheet" href="~/css/Login/Register.css" />
+
+<div class="container-fluid register-page">
+    <div class="row no-gutters">
+        <!-- Left Panel (Register Form) -->
+        <div class="col-lg-6 left-panel d-flex align-items-center justify-content-center">
+            <div class="register-form">
+                <h3 class="text-center text-light mb-4">Create Your Account</h3>
+                <form asp-controller="Register" asp-action="ValidateRegistration" method="post">
+                    <!-- Username Field -->
+                    <div class="form-group mb-3">
+                        <label for="username" class="form-label text-light">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="form-group mb-3">
+                        <label for="password" class="form-label text-light">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <!-- Email Field -->
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label text-light">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <!-- Phone Number Field -->
+                    <div class="form-group mb-3">
+                        <label for="phone" class="form-label text-light">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    <!-- Register Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                    <!-- Login Link -->
+                    <div class="text-center mt-3">
+                        <p class="text-light">Already have an account? <a asp-controller="Login" asp-action="LoginPage" class="text-primary">Login</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Panel (Project Information) -->
+        <div class="col-lg-6 right-panel d-flex align-items-center justify-content-center">
+            <div class="info">
+                <h1 class="text-white mb-3">Join Our Community</h1>
+                <p class="text-light">Take the first step to managing your restaurant with our advanced <strong>Restaurant Management System</strong>. Simplify daily operations, enhance productivity, and stay on top of your business effortlessly.</p>
+            </div>
+        </div>
+    </div>
+</div>

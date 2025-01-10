@@ -2,60 +2,47 @@
     ViewData["Title"] = "Login Page";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg" style="background-color: #1f1f1f; color: #ffffff; border: none; border-radius: 10px;">
-                <div class="card-body">
-                    <h3 class="card-title text-center text-primary mb-4">Login</h3>
-                    <form asp-controller="Login" asp-action="Validate" method="post">
-                        <!-- Username Field -->
-                        <div class="form-group mb-4">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" style="background-color: #2a2a2a; color: #ffffff; border: 1px solid #444;">
-                        </div>
-                        <!-- Password Field -->
-                        <div class="form-group mb-4">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" style="background-color: #2a2a2a; color: #ffffff; border: 1px solid #444;">
-                        </div>
-                        <!-- Submit Button -->
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg px-5" style="border-radius: 25px;">Submit</button>
-                        </div>
-                    </form>
-                </div>
+<link rel="stylesheet" href="~/css/Login/LoginPage.css" />
+
+<div class="container-fluid login-page">
+    <div class="row no-gutters">
+        <!-- Left Panel (Login Form) -->
+        <div class="col-lg-6 left-panel d-flex align-items-center justify-content-center">
+            <div class="login-form">
+                <h3 class="text-center text-light mb-4">Sign in to dashboard</h3>
+                <form asp-controller="Login" asp-action="Validate" method="post">
+                    <!-- Email Field -->
+                    <div class="form-group mb-3">
+                        <label for="username" class="form-label text-light">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Type your username" required>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="form-group mb-3">
+                        <label for="password" class="form-label text-light">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Type your password" required>
+                    </div>
+                    <!-- Forgot Password -->
+                    <div class="text-right mb-3">
+                        <a href="/forgot-password" class="text-primary">Forgot Password?</a>
+                    </div>
+                    <!-- Login Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </div>
+                    <!-- Register Link -->
+                    <div class="text-center mt-3">
+                        <p class="text-light">Don't have an account? <a asp-controller="Login" asp-action="Register" class="text-primary">Register</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Panel (Project Information) -->
+        <div class="col-lg-6 right-panel d-flex align-items-center justify-content-center">
+            <div class="info">
+                <h1 class="text-white mb-3">Join Our Community</h1>
+                <p class="text-light">Manage your restaurant seamlessly with our advanced <strong>Restaurant Management System</strong>. Track orders, monitor transactions, manage stock, and ensure your operations are smooth and scalable. Designed for modern restaurants, it combines ease of use with powerful features to support your daily needs.</p>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    function loginUser() {
-        const username = $('#username').val();
-        const password = $('#password').val();
-
-        $.ajax({
-            url: '/Login/Validate',
-            type: 'GET',
-            data: { username: username, password: password },
-            success: function (response) {
-                if (response.success === 1) {
-                    // Redirect to the URL returned from the server
-                    window.location.href = response.redirectUrl;
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function (error) {
-                alert("Error during login!");
-            }
-        });
-    }
-</script>
-
-<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-

@@ -10,6 +10,7 @@ namespace restaurantOrderManagement.Controllers
     {
         [Route("~/")]
         [Route("Home")]
+        [Route("LoginPage")]
         public IActionResult LoginPage()
         {
             var sessionDetails = HttpContext.Session.GetObjectFromJson<UserSec>("SessionDetails");
@@ -35,7 +36,7 @@ namespace restaurantOrderManagement.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Validate")]
         public IActionResult Validate(string username, string password)
         {
             try
@@ -71,7 +72,7 @@ namespace restaurantOrderManagement.Controllers
                         objsession.vUserRole = UserRole.Manager;
                         HttpContext.Session.SetObjectAsJson("SessionDetails", objsession);
 
-                        ViewBag.UserId = StringUtility.toTitleCase(objsession?.UserID);
+                        ViewBag.UserId = StringUtility.toTitleCase(objsession.UserID);
                         return RedirectToAction("Welcome", "Manager");
                     }
                 }
@@ -90,6 +91,43 @@ namespace restaurantOrderManagement.Controllers
             }
         }
 
+        [Route("Register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost("ValidateRegistration")]
+        public IActionResult ValidateRegistration(string username, string password, string email, long phone)
+        {
+            List<RegisterModel> exists = DBOperations<RegisterModel>.GetAllOrByRange(new RegisterModel
+            {
+                OpMode = 1,
+                Email = email,
+                MobileNumber = phone
+            }, Constant.usp_Register);
+
+            if(exists.Count > 0)
+            {
+                ViewBag.ErrorMag = "User already Exists";
+                return RedirectToAction("Register", "Login");
+            }
+
+            DBOperations<RegisterModel>.DMLOperation(new RegisterModel
+            {
+                OpMode = 0,
+                UserID = username,
+                PassCode = password,
+                Email = email,
+                MobileNumber = phone,
+                IsActive = 1,
+                UserType = 1
+            }, Constant.usp_Register);
+
+            return RedirectToAction("LoginPage", "Login");
+        }
+
+        [Route("Logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
